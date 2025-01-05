@@ -32,6 +32,7 @@
     "pinctrl": "installer/pinctrl.sh",
     "rebuild": "installer/rebuild.sh",
     "reset": "rm -f *.js && rm -rf components/*.js && git reset --hard",
+    "screenSaver": "installer/screenSaver.sh",
     "presetup": "npm run dependencies && installer/preinstall.sh",
     "setup": "npm prune",
     "postsetup": "installer/postinstall.sh -m -r",
