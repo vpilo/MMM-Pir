@@ -28,11 +28,18 @@ Module.register("MMM-Pir", {
       wrandrForceRotation: "normal",
       wrandrForceMode: null,
       waylandDisplayName: "wayland-0",
-      relayGPIOPin: 0
+      relayGPIOPin: 0,
+      ddcutil: {
+        powerOnCode: "01",
+        powerOffCode: "04",
+        skipSetVcpCheck: false,
+        setPowerRetries: 0
+      }
     },
     Pir: {
       mode: 0,
-      gpio: 21
+      gpio: 21,
+      config: "auto"
     },
     Motion: {
       deviceId: 0,
