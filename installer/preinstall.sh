@@ -52,9 +52,4 @@ Installer_chk "$(pwd)/" "$Installer_module"
 Installer_chk "$(pwd)/../../" "MagicMirror"
 echo
 
-# apply @sdetweil fix
-Installer_info "Installing @sdetweil sandbox fix..."
-bash -c "$(curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/fixsandbox)"
-echo
-
 Installer_info "③ ➤ Install npm dependencies"
