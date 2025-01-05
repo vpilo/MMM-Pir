@@ -66,7 +66,8 @@ To display the module insert it in the config.js file.
     },
     Pir: {
       mode: 0,
-      gpio: 21
+      gpio: 21,
+      chip: "auto"
     },
     Motion: {
       deviceId: 0,
@@ -152,6 +153,7 @@ For some displays, the `getvcp` commands cause the display to turn-on. In these 
  | ------- | --- | --- | --- |
  | mode | Detection mode (see bellow) | Number | 0 |
  | gpio | BCM-number of the sensor pin. | Number | 21 |
+ | chip | **-mode 0 Only-** Define your GPIO Chip label (`auto` for automatic chip search) | String | "auto" |
 
 * Available mode:
     - `mode: 0` - use node-libgpiod library

@@ -10,7 +10,8 @@ class PIR {
     this.default = {
       debug: false,
       gpio: 21,
-      mode: 0
+      mode: 0,
+      chip: "auto"
     };
     this.config = Object.assign({}, this.default, this.config);
     if (this.config.debug) log = (...args) => { console.log("[MMM-Pir] [LIB] [PIR]", ...args); };
@@ -130,9 +131,12 @@ class PIR {
           this.pirChip = new Chip(number);
           const label = this.pirChip.getChipLabel();
           log(`[GPIOD] Check chip ${number}: ${label}`);
-          if (label.includes("pinctrl-")) {
+          const isAuto = this.config.chip === "auto" && label.includes("pinctrl-");
+          const isManual = this.config.chip !== "auto" && label.includes(this.config.chip);
+
+          if (isAuto || isManual) {
             // found chip
-            console.log(`[MMM-Pir] [LIB] [PIR] [GPIOD] Found chip ${number}: ${label}`);
+            console.log(`[MMM-Pir] [LIB] [PIR] [GPIOD] - ${isAuto ? "Auto" : "Manual"} - Found chip ${number}: ${label}`);
             this.pirChipNumber = number;
             return false;
           }

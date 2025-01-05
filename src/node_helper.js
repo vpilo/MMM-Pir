@@ -101,7 +101,8 @@ module.exports = NodeHelper.create({
     let pirConfig = {
       debug: this.config.debug,
       gpio: this.config.Pir.gpio,
-      mode: this.config.Pir.mode
+      mode: this.config.Pir.mode,
+      chip: this.config.Pir.chip
     };
 
     let screenConfig = {
