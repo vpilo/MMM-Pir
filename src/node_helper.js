@@ -73,7 +73,7 @@ module.exports = NodeHelper.create({
         log("[CALLBACK] Pir:", noti, params || "");
         if (noti === "PIR_DETECTED") {
           this.screen.wakeup();
-          this.sendSocketNotification("PIR_DETECTED-ANIMATE");
+          if (this.config.Display.animate) this.sendSocketNotification("PIR_DETECTED-ANIMATE");
         } else {
           this.sendSocketNotification(noti, params);
         }
@@ -102,7 +102,7 @@ module.exports = NodeHelper.create({
       debug: this.config.debug,
       gpio: this.config.Pir.gpio,
       mode: this.config.Pir.mode,
-      chip: this.config.Pir.chip || "auto"
+      chip: this.config.Pir.chip
     };
 
     let screenConfig = {
