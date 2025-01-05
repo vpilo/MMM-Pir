@@ -1,6 +1,6 @@
 {
   "name": "MMM-Pir",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "Screen manager",
   "keywords": [
     "magic mirror",
@@ -61,5 +61,5 @@
   "engines": {
     "node": ">=20.9.0 <21 || >=22"
   },
-  "rev": "250102"
+  "rev": "250105"
 }
