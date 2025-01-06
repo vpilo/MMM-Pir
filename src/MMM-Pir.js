@@ -37,11 +37,13 @@ Module.register("MMM-Pir", {
       }
     },
     Pir: {
+      animate: true,
       mode: 0,
       gpio: 21,
       config: "auto"
     },
     Motion: {
+      animate: true,
       deviceId: 0,
       captureIntervalTime: 1000,
       scoreThreshold: 100
@@ -76,7 +78,7 @@ Module.register("MMM-Pir", {
       show: (...args) => this.show(...args),
       wakeup: () => {
         this.sendSocketNotification("WAKEUP");
-        this.screenDisplay.animateModule();
+        if (this.config.Motion.animate) this.screenDisplay.animateModule();
       }
     };
 
@@ -144,7 +146,7 @@ Module.register("MMM-Pir", {
           timer: 15000
         });
         break;
-      case "PIR_DETECTED-ANIMATE":
+      case "PIR_ANIMATE":
         this.screenDisplay.animateModule();
         break;
       case "GOVERNOR_ERROR":

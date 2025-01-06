@@ -65,11 +65,13 @@ To display the module insert it in the config.js file.
       }
     },
     Pir: {
+      animate: true,
       mode: 0,
       gpio: 21,
       chip: "auto"
     },
     Motion: {
+      animate: true,
       deviceId: 0,
       captureIntervalTime: 1000,
       scoreThreshold: 100
@@ -151,6 +153,7 @@ For some displays, the `getvcp` commands cause the display to turn-on. In these 
 #### Pir Sensor Configuration
  | Option  | Description | Type | Default |
  | ------- | --- | --- | --- |
+ | animate | Animate MMM-Pir module on detect | Boolean | true |
  | mode | Detection mode (see bellow) | Number | 0 |
  | gpio | BCM-number of the sensor pin. | Number | 21 |
  | chip | **-mode 0 Only-** Define your GPIO Chip label (`auto` for automatic chip search) | String | "auto" |
@@ -167,6 +170,7 @@ This Feature allows to control your screen with a webcam as a motion detector.
 
  | Option  | Description | Type | Default |
  | ------- | --- | --- | --- |
+ | animate | Animate MMM-Pir module on detect | Boolean | true |
  | captureIntervalTime | Time in ms between capturing images for detection | Number | 1000 |
  | scoreThreshold | Threshold minimum for an image to be considered significant | Number | 100 |
  | deviceId | Disable, enable auto detection or Specify which camera to use in case multiple exist in the system. | Number or String | 0 |
