@@ -1,7 +1,7 @@
 const options = {
   "config": {
     "MD013": {
-     "line_length": 130
+     "line_length": 350
     }
   }
 };
