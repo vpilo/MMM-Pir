@@ -37,6 +37,7 @@
     "setup": "npm prune",
     "postsetup": "installer/postinstall.sh -m -r",
     "test": "npm run lint",
+    "test:css": "stylelint *.css",
     "test:markdown": "markdownlint-cli2 *.md",
     "test:minify": "cd installer && node minify.js",
     "update": "installer/update.sh"
@@ -59,7 +60,10 @@
     "eslint": "^9.17.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-package-json": "^0.19.0",
-    "markdownlint-cli2": "^0.17.1"
+    "markdownlint-cli2": "^0.17.1",
+    "stylelint": "^16.12.0",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-prettier": "^5.0.2"
   },
   "engines": {
     "node": ">=20.9.0 <21 || >=22"
