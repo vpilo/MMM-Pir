@@ -40,7 +40,7 @@ Module.register("MMM-Pir", {
       animate: true,
       mode: 0,
       gpio: 21,
-      config: "auto"
+      chip: "auto"
     },
     Motion: {
       animate: true,
