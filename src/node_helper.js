@@ -73,6 +73,7 @@ module.exports = NodeHelper.create({
         log("[CALLBACK] Pir:", noti, params || "");
         if (noti === "PIR_DETECTED") {
           this.screen.wakeup();
+          this.sendSocketNotification("PIR_DETECTED");
           if (this.config.Pir.animate) this.sendSocketNotification("PIR_ANIMATE");
         } else {
           this.sendSocketNotification(noti, params);

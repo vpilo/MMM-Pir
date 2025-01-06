@@ -374,6 +374,7 @@ You can disable sound by using `0` in your configuration
 
   * `MMM_PIR-SCREEN_POWERSTATUS` with payload `true` when your screen turn on.
   * `MMM_PIR-SCREEN_POWERSTATUS` with payload `false` when your screen turn off.
+  * `MMM_PIR-USER_PRESENCE` with payload `true` when motion is detected.
 
 - This module receive:
 

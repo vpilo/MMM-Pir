@@ -146,6 +146,9 @@ Module.register("MMM-Pir", {
           timer: 15000
         });
         break;
+      case "PIR_DETECTED":
+        this.sendNotification("MMM_PIR-USER_PRESENCE", true);
+        break;
       case "PIR_ANIMATE":
         this.screenDisplay.animateModule();
         break;
