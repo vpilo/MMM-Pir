@@ -20,6 +20,7 @@ class SCREEN {
       debug: false,
       timeout: 5 * 60 * 1000,
       mode: 1,
+      ecoMode: true,
       relayGPIOPin: 0,
       availability: true,
       autoDimmer: false,
@@ -219,7 +220,7 @@ class SCREEN {
 
   forceTurnOffScreen () {
     if (!this.screen.power) return log("forceTurnOffScreen: already off");
-    this.sendSocketNotification("SCREEN_HIDING");
+    if (this.config.ecoMode) this.sendSocketNotification("SCREEN_HIDING");
     this.screen.power = false;
     if (this.config.mode) this.wantedPowerDisplay(false);
     this.screen.dimmer = 0;

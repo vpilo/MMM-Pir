@@ -47,6 +47,7 @@ To display the module insert it in the config.js file.
       colorFrom: "#FF0000",
       colorTo: "#00FF00",
       mode: 1,
+      ecoMode : true,
       counter: true,
       lastPresence: true,
       lastPresenceTimeFormat: "LL H:mm",
@@ -108,6 +109,7 @@ To display the module insert it in the config.js file.
  | colorFrom | Color of the start of the color gradient (default: Red in HEXA) | String | #FF0000 |
  | colorTo | Color of the start of the color gradient (default: Green in HEXA) | String | #00FF00 |
  | mode | mode for turn on/off your screen (see bellow) | Number | 1 |
+ | ecoMode | Should the MagicMirror hide all module after timeout ? | Boolean | true |
  | counter | Should display Count-down in screen ? | Boolean | true |
  | lastPresence | Display the date of the last user presence | Boolean | true |
  | lastPresenceTimeFormat | Change the date format (moment.js format) of the last presence | String | LL H:mm |
