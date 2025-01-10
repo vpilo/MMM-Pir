@@ -159,14 +159,6 @@ class SCREEN {
     this.screenStatus();
   }
 
-  activate () {
-    process.on("exit", () => {
-      if (this.config.mode) this.setPowerDisplay(true);
-      this.governor("WORKING");
-    });
-    this.start();
-  }
-
   async start (restart) {
     if (this.screen.locked || this.screen.running) return;
     if (!restart) log("Start.");
@@ -821,6 +813,10 @@ class SCREEN {
       }
       this.status = status;
     }, 1000);
+  }
+
+  close () {
+    if (this.config.mode) this.setPowerDisplay(true);
   }
 }
 

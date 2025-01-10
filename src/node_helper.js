@@ -12,10 +12,25 @@ const LibGovernor = require("./components/governorLib");
 
 module.exports = NodeHelper.create({
   start () {
+    this.stopped = false;
     this.pir = null;
     this.screen = null;
     this.cron = null;
     this.governor = null;
+    process.on("exit", () => {
+      if (!this.stopped) this.stop;
+    });
+  },
+
+  stop () {
+    this.stopped = true;
+    console.log("Stopping module helper: MMM-Pir...");
+    console.log("[MMM-Pir] Stopping Governor");
+    this.governor.working();
+    console.log("[MMM-Pir] Stopping Screen");
+    this.screen.close();
+    console.log("[MMM-Pir] Stopping Pir");
+    this.pir.stop();
   },
 
   socketNotificationReceived (notification, payload) {
@@ -149,7 +164,7 @@ module.exports = NodeHelper.create({
       this.governor.start();
 
       this.screen = new LibScreen(screenConfig, callbacks.screen);
-      this.screen.activate();
+      this.screen.start();
 
       this.cron = new LibCron(cronConfig, callbacks.cron);
       this.cron.start();
