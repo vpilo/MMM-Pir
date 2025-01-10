@@ -1,13 +1,13 @@
 import globals from "globals";
 import eslintPluginStylistic from "@stylistic/eslint-plugin";
 import eslintPluginDepend from "eslint-plugin-depend";
-import eslintPluginImport from "eslint-plugin-import";
+import eslintPluginImportX from "eslint-plugin-import-x";
 import eslintPluginJs from "@eslint/js";
 import eslintPluginPackageJson from "eslint-plugin-package-json/configs/recommended";
 
 const config = [
   eslintPluginDepend.configs["flat/recommended"],
-  eslintPluginImport.flatConfigs.recommended,
+  eslintPluginImportX.flatConfigs.recommended,
   eslintPluginJs.configs.recommended,
   {
     "files": ["**/*.js"],
@@ -57,15 +57,9 @@ const config = [
       "@stylistic/spaced-comment": "off",
       "eqeqeq": "error",
       "id-length": "off",
-      "import/order": "error",
-      "import/extensions": [
-        "error",
-        {
-          "json": "always" // ignore json require (display EXT version and rev date)
-        }
-      ],
-      "import/newline-after-import": "error",
-      "import/no-unresolved": "error",
+      "import-x/order": "error",
+      "import-x/newline-after-import": "error",
+      "import-x/no-unresolved": "error",
       "init-declarations": "off",
       "max-lines-per-function": ["warn", 400],
       "max-statements": "off",
@@ -106,8 +100,7 @@ const config = [
       "@stylistic/indent": ["error", 2],
       "@stylistic/array-element-newline": "off",
       "@stylistic/function-call-argument-newline": "off",
-      "import/no-unresolved": "off",
-      "depend/ban-dependencies": ["error", {"allowed": ["eslint-plugin-import"]}]
+      "import-x/no-unresolved": "off"
     }
   },
   {
@@ -115,8 +108,7 @@ const config = [
     ...eslintPluginPackageJson,
     "rules": {
       ...eslintPluginPackageJson.rules,
-      "package-json/valid-name": "off",
-      "depend/ban-dependencies": ["error", {"allowed": ["eslint-plugin-import"]}]
+      "package-json/valid-name": "off"
     }
   },
   {
