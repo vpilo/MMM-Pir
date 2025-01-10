@@ -1,10 +1,12 @@
 import globals from "globals";
 import eslintPluginStylistic from "@stylistic/eslint-plugin";
+import eslintPluginDepend from "eslint-plugin-depend";
 import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginJs from "@eslint/js";
 import eslintPluginPackageJson from "eslint-plugin-package-json/configs/recommended";
 
 const config = [
+  eslintPluginDepend.configs["flat/recommended"],
   eslintPluginImport.flatConfigs.recommended,
   eslintPluginJs.configs.recommended,
   {
@@ -83,7 +85,8 @@ const config = [
       "one-var": "off",
       "prefer-destructuring": "off",
       "prefer-template": "error",
-      "sort-keys": "off"
+      "sort-keys": "off",
+      "depend/ban-dependencies": ["error", {"allowed": ["moment"]}]
     }
   },
   {
@@ -103,7 +106,8 @@ const config = [
       "@stylistic/indent": ["error", 2],
       "@stylistic/array-element-newline": "off",
       "@stylistic/function-call-argument-newline": "off",
-      "import/no-unresolved": "off"
+      "import/no-unresolved": "off",
+      "depend/ban-dependencies": ["error", {"allowed": ["eslint-plugin-import"]}]
     }
   },
   {
@@ -111,7 +115,8 @@ const config = [
     ...eslintPluginPackageJson,
     "rules": {
       ...eslintPluginPackageJson.rules,
-      "package-json/valid-name": "off"
+      "package-json/valid-name": "off",
+      "depend/ban-dependencies": ["error", {"allowed": ["eslint-plugin-import"]}]
     }
   },
   {
