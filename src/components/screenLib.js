@@ -5,7 +5,7 @@
 
 const exec = require("child_process").exec;
 const process = require("process");
-const moment = require("moment");
+const dayjs = require("dayjs");
 const Utils = require("./utils");
 
 var log = () => { /* do nothing */ };
@@ -214,7 +214,7 @@ class SCREEN {
         this.screen.output.dimmer = 1 - ((this.screen.dimmerFrom - this.counter) / this.screen.dimmerFrom);
       }
 
-      this.screen.output.timer = moment(new Date(this.counter)).format("mm:ss");
+      this.screen.output.timer = dayjs(new Date(this.counter)).format("mm:ss");
       this.screen.output.bar = (this.counter / this.config.timeout).toFixed(3);
 
       this.sendSocketNotification("SCREEN_OUTPUT", this.screen.output);

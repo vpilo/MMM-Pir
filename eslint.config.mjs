@@ -79,8 +79,7 @@ const config = [
       "one-var": "off",
       "prefer-destructuring": "off",
       "prefer-template": "error",
-      "sort-keys": "off",
-      "depend/ban-dependencies": ["error", {"allowed": ["moment"]}]
+      "sort-keys": "off"
     }
   },
   {
