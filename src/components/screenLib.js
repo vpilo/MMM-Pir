@@ -6,7 +6,7 @@
 const exec = require("child_process").exec;
 const process = require("process");
 const moment = require("moment");
-const lodash = require("lodash");
+const Utils = require("./utils");
 
 var log = () => { /* do nothing */ };
 
@@ -35,7 +35,7 @@ class SCREEN {
         setPowerRetries: 0
       }
     };
-    this.config = lodash.defaultsDeep(this.config, this.default, {});
+    this.config = Utils.configMerge({}, this.default, this.config);
     if (this.config.debug) log = (...args) => { console.log("[MMM-Pir] [LIB] [SCREEN]", ...args); };
     this.screen = {
       mode: this.config.mode,
