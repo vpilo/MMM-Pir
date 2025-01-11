@@ -56,7 +56,6 @@ class motionLib {
         if (hasMotion) {
           _logPIR(`[MOTION] Motion detected, score ${score}`);
           this.wakeup();
-          this.sendNotification("MMM_PIR-USER_PRESENCE", true);
         }
       }
     });

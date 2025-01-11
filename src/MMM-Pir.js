@@ -80,6 +80,7 @@ Module.register("MMM-Pir", {
       wakeup: () => {
         this.sendSocketNotification("WAKEUP");
         if (this.config.Motion.animate) this.screenDisplay.animateModule();
+        this.sendNotification("MMM_PIR-USER_PRESENCE", true);
       }
     };
 
