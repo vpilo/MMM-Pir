@@ -45,10 +45,10 @@ async function minifyFiles () {
  * @returns {boolean} resolved with true
  */
 function minify (file) {
-  var FileName, MyFileName
+  var FileName, MyFileName;
   if (isWin) {
-	  FileName = file.replace("..\\src\\", "..\\");
-	  MyFileName = `${project}\\${FileName.replace("..\\", "")}`;
+    FileName = file.replace("..\\src\\", "..\\");
+    MyFileName = `${project}\\${FileName.replace("..\\", "")}`;
   } else {
     FileName = file.replace("../src/", "../");
     MyFileName = `${project}/${FileName.replace("../", "")}`;
