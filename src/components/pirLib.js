@@ -11,7 +11,8 @@ class PIR {
       debug: false,
       gpio: 21,
       mode: 0,
-      chip: "auto"
+      chip: "auto",
+      triggerMode: "LH"
     };
     this.config = Object.assign({}, this.default, this.config);
     if (this.config.debug) log = (...args) => { console.log("[MMM-Pir] [LIB] [PIR]", ...args); };
@@ -86,8 +87,10 @@ class PIR {
           if (this.pirReadyToDetect) {
             log("Motion Detected");
             this.callback("PIR_DETECTED");
-            this.pirReadyToDetect = false;
-            log("Debug: Set motion detect ready to:", this.pirReadyToDetect);
+            if (this.config.triggerMode === "LH") {
+              this.pirReadyToDetect = false;
+              log("Debug: Set motion detect ready to:", this.pirReadyToDetect);
+            }
           }
           break;
         case "NoMotion":
@@ -176,7 +179,7 @@ class PIR {
       if (this.running) {
         try {
           var value = line.getValue();
-          if (value !== this.oldstate) {
+          if (value !== this.oldstate || this.config.triggerMode === "H") {
             this.oldstate = value;
             log(`Sensor read value: ${value}`);
             if (value === 1) {

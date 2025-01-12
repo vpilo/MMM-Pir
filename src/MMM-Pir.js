@@ -41,7 +41,8 @@ Module.register("MMM-Pir", {
       animate: true,
       mode: 0,
       gpio: 21,
-      chip: "auto"
+      chip: "auto",
+      triggerMode: "LH"
     },
     Motion: {
       animate: true,
