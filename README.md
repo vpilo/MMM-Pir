@@ -65,7 +65,8 @@ To display the module insert it in the config.js file.
     },
     Pir: {
       mode: 0,
-      gpio: 21
+      gpio: 21,
+      triggerMode : "LH"
     },
     Motion: {
       deviceId: 0,
@@ -151,10 +152,15 @@ For some displays, the `getvcp` commands cause the display to turn-on. In these 
  | ------- | --- | --- | --- |
  | mode | Detection mode (see bellow) | Number | 0 |
  | gpio | BCM-number of the sensor pin. | Number | 21 |
+ | triggerMode | Triggering mode (see below) | String | "LH" |
 
 * Available mode:
     - `mode: 0` - use node-libgpiod library
     - `mode: 1` - use python script with gpiozero library
+
+* Available triggering modes:
+  - `triggerMode: 'LH'` - motion signal is triggered when sensor goes from LOW (0, no-motion) to HIGH (1, motion)
+  - `triggerMode: 'H'` - motion signal is triggered whenever the sensor sends a HIGH (1, motion) message
 
  ⚠ You can disable PIR Sensor detection by using `gpio: 0`
 

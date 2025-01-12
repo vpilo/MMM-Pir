@@ -32,7 +32,8 @@ Module.register("MMM-Pir", {
     },
     Pir: {
       mode: 0,
-      gpio: 21
+      gpio: 21,
+      triggerMode: "LH"
     },
     Motion: {
       deviceId: 0,
