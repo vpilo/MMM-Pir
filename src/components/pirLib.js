@@ -28,6 +28,19 @@ class PIR {
   start () {
     if (this.running) return;
     if (this.config.gpio === 0) return console.log("[MMM-Pir] [LIB] [PIR] Disabled.");
+    switch (this.config.triggerMode) {
+      case "LH":
+        console.log("[MMM-Pir] [LIB] [PIR] triggerMode LH Selected: Read LOW (0, no-motion) to HIGH (1, motion)");
+        break;
+      case "H":
+        console.log("[MMM-Pir] [LIB] [PIR] triggerMode H Selected: Read HIGH (1, motion)");
+        break;
+      default:
+        console.warn(`[MMM-Pir] [LIB] [PIR] triggerMode: ${this.config.mode} is not a valid value`);
+        console.warn("[MMM-Pir] [LIB] [PIR] set triggerMode LH");
+        this.config.triggerMode = "LH";
+        break;
+    }
     switch (this.config.mode) {
       case 0:
         console.log("[MMM-Pir] [LIB] [PIR] Mode 0 Selected (gpiod library)");
