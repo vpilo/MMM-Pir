@@ -36,6 +36,7 @@
     "presetup": "npm run deps && installer/preinstall.sh",
     "setup": "npm prune",
     "postsetup": "installer/postinstall.sh -m -r",
+    "setup:windows": "call installer/windows.cmd",
     "test": "npm run lint",
     "test:css": "stylelint *.css",
     "test:markdown": "markdownlint-cli2 *.md",
