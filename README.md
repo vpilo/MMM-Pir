@@ -177,8 +177,8 @@ For some displays, the `getvcp` commands cause the display to turn-on. In these 
   * `mode: 1` - use python script with gpiozero library
 
 * Available triggering modes:
-  - `triggerMode: 'LH'` - motion signal is triggered when sensor goes from LOW (0, no-motion) to HIGH (1, motion)
-  - `triggerMode: 'H'` - motion signal is triggered whenever the sensor sends a HIGH (1, motion) message
+  * `triggerMode: 'LH'` - motion signal is triggered when sensor goes from LOW (0, no-motion) to HIGH (1, motion)
+  * `triggerMode: 'H'` - motion signal is triggered whenever the sensor sends a HIGH (1, motion) message
 
  ⚠ You can disable PIR Sensor detection by using `gpio: 0`
 
