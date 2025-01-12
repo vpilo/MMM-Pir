@@ -21,7 +21,7 @@
   "main": "MMM-Pir.js",
   "scripts": {
     "clean": "rm -rf node_modules package-lock.json",
-    "dependencies": "installer/dependencies.sh -d 'unclutter ddcutil cec-utils python3 python-is-python3 python3-gpiozero gpiod libgpiod2 libgpiod-dev'",
+    "deps": "installer/dependencies.sh -d 'unclutter ddcutil cec-utils python3 python-is-python3 python3-gpiozero gpiod libgpiod2 libgpiod-dev'",
     "dev": "cd installer && node dev.js",
     "dev:src": "cd installer && node src.js",
     "preinstall": "echo ⚠ npm install will be deprecated on next release!.",
@@ -33,7 +33,7 @@
     "rebuild": "installer/rebuild.sh",
     "reset": "rm -f *.js && rm -rf components/*.js && git reset --hard",
     "screenSaver": "installer/screenSaver.sh",
-    "presetup": "npm run dependencies && installer/preinstall.sh",
+    "presetup": "npm run deps && installer/preinstall.sh",
     "setup": "npm prune",
     "postsetup": "installer/postinstall.sh -m -r",
     "test": "npm run lint",
