@@ -299,7 +299,7 @@ class SCREEN {
 
   async wantedPowerDisplay (wanted) {
     var actual = false;
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       switch (this.config.mode) {
         case 0:
           // disabled
@@ -473,9 +473,9 @@ class SCREEN {
         case 9:
           console.log("[MMM-Pir] [LIB] [SCREEN] [Win Test] by pass check");
           // by pass check: need to find a command to find monitor state
-		  log("[Win Test] Actual:", this.status)
-		  log("[Win Test] Wanted:", wanted)
-          resolve(await this.resultDisplay(this.status, wanted));
+          log("[Win Test] Actual:", this.status);
+          log("[Win Test] Wanted:", wanted);
+          resolve(this.resultDisplay(this.status, wanted));
           break;
       }
     });
@@ -716,9 +716,9 @@ class SCREEN {
           break;
         case 9:
           if (set) {
-			log("[Win Test] Screen On")
-			let ps = "(Add-Type '[DllImport(\"user32.dll\")]public static extern int PostMessage(int h,int m,int w,int l);' -Name a -Pas)::PostMessage(-1,0x0112,0xF170,-1)"
-			exec(ps, {'shell':'powershell.exe'}, (err, stdout, stderr) => {	
+            log("[Win Test] Screen On");
+            let ps = "(Add-Type '[DllImport(\"user32.dll\")]public static extern int PostMessage(int h,int m,int w,int l);' -Name a -Pas)::PostMessage(-1,0x0112,0xF170,-1)";
+            exec(ps, { shell: "powershell.exe" }, (err) => {
               if (err) {
                 console.error(`[MMM-Pir] [LIB] [SCREEN] mode 9, power ON: ${err}`);
                 this.sendSocketNotification("SCREEN_ERROR", "windows command command error (mode 9 power ON)");
@@ -727,9 +727,9 @@ class SCREEN {
             });
           }
           else {
-            log("[Win Test] Screen Off")
-			let ps = "(Add-Type '[DllImport(\"user32.dll\")]public static extern int PostMessage(int h,int m,int w,int l);' -Name a -Pas)::PostMessage(-1,0x0112,0xF170,2)"
-            exec(ps, {'shell':'powershell.exe'}, (err, stdout, stderr) => {	
+            log("[Win Test] Screen Off");
+            let ps = "(Add-Type '[DllImport(\"user32.dll\")]public static extern int PostMessage(int h,int m,int w,int l);' -Name a -Pas)::PostMessage(-1,0x0112,0xF170,2)";
+            exec(ps, { shell: "powershell.exe" }, (err) => {
               if (err) {
                 console.error(`[MMM-Pir] [LIB] [SCREEN] mode 9, power OFF: ${err}`);
                 this.sendSocketNotification("SCREEN_ERROR", "windows command error (mode 9 power OFF)");
