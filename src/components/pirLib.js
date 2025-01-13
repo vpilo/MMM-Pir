@@ -2,6 +2,7 @@
 /** bugsounet **/
 
 var log = () => { /* do nothing */ };
+const Utils = require("./utils");
 
 class PIR {
   constructor (config, callback) {
@@ -23,6 +24,10 @@ class PIR {
     this.pirChipNumber = -1;
     this.pirInterval = null;
     this.pirReadyToDetect = false;
+    if (Utils.isWin()) {
+      console.log("[MMM-Pir] [LIB] [PIR] [Windows] Pir library Disabled.");
+      if (this.config.gpio) this.config.gpio = 0;
+    }
   }
 
   start () {

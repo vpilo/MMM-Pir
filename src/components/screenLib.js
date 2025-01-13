@@ -9,7 +9,6 @@ const dayjs = require("dayjs");
 const Utils = require("./utils");
 
 var log = () => { /* do nothing */ };
-const isWin = process.platform === "win32";
 
 class SCREEN {
   constructor (config, callback) {
@@ -137,11 +136,11 @@ class SCREEN {
         console.log("[MMM-Pir] [LIB] [SCREEN] Mode 8: relais");
         break;
       case 9:
-        if (isWin) {
+        if (Utils.isWin()) {
           console.log("[MMM-Pir] [LIB] [SCREEN] Mode 9: Windows (test)");
         } else {
-          console.error("[MMM-Pir] [LIB] [SCREEN] Mode 9 is reserved for windows OS -- Set to 0 (Disabled)");
-          this.sendSocketNotification("SCREEN_ERROR", "Mode 9 is reserved for windows OS -- Set to 0 (Disabled)");
+          console.error("[MMM-Pir] [LIB] [SCREEN] Mode 9 is reserved for windows OS -- Set mode to 0 (Disabled)");
+          this.sendSocketNotification("SCREEN_ERROR", "Mode 9 is reserved for windows OS -- Set mode to 0 (Disabled)");
           this.config.mode = 0;
         }
         break;

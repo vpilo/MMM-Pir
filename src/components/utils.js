@@ -22,5 +22,8 @@ module.exports = {
       }
     }
     return result;
+  },
+  isWin () {
+    return process.platform === "win32";
   }
 };
