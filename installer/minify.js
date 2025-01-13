@@ -8,6 +8,7 @@ const { fdir } = require("fdir");
 const esbuild = require("esbuild");
 
 var files = [];
+var isWin = process.platform === "win32";
 
 let project = require("../package.json").name;
 let revision = require("../package.json").rev;
@@ -44,8 +45,14 @@ async function minifyFiles () {
  * @returns {boolean} resolved with true
  */
 function minify (file) {
-  let FileName = file.replace("../src/", "../");
-  let MyFileName = `${project}/${FileName.replace("../", "")}`;
+  var FileName, MyFileName;
+  if (isWin) {
+    FileName = file.replace("..\\src\\", "..\\");
+    MyFileName = `${project}\\${FileName.replace("..\\", "")}`;
+  } else {
+    FileName = file.replace("../src/", "../");
+    MyFileName = `${project}/${FileName.replace("../", "")}`;
+  }
   let pathInResolve = path.resolve(__dirname, file);
   let pathOutResolve = path.resolve(__dirname, FileName);
   console.log("Process File:", MyFileName);

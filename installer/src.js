@@ -8,6 +8,7 @@ const { copyFileSync } = require("node:fs");
 const { fdir } = require("fdir");
 
 var files = [];
+var isWin = process.platform === "win32";
 
 let project = require("../package.json").name;
 
@@ -41,11 +42,17 @@ async function installFiles () {
  * @returns {boolean} resolved with true
  */
 function install (file) {
-  let FileName = file.replace("../src/", "../");
-  let GAFileName = `${project}/${FileName.replace("../", "")}`;
+  var FileName, MyFileName;
+  if (isWin) {
+    FileName = file.replace("..\\src\\", "..\\");
+    MyFileName = `${project}\\${FileName.replace("..\\", "")}`;
+  } else {
+    FileName = file.replace("../src/", "../");
+    MyFileName = `${project}/${FileName.replace("../", "")}`;
+  }
   let pathInResolve = path.resolve(__dirname, file);
   let pathOutResolve = path.resolve(__dirname, FileName);
-  console.log("Process File:", GAFileName);
+  console.log("Process File:", MyFileName);
   return new Promise((resolve, reject) => {
     try {
       copyFileSync(pathOutResolve, pathInResolve);

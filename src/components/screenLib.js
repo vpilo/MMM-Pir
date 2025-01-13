@@ -135,6 +135,15 @@ class SCREEN {
       case 8:
         console.log("[MMM-Pir] [LIB] [SCREEN] Mode 8: relais");
         break;
+      case 9:
+        if (Utils.isWin()) {
+          console.log("[MMM-Pir] [LIB] [SCREEN] Mode 9: Windows (test)");
+        } else {
+          console.error("[MMM-Pir] [LIB] [SCREEN] Mode 9 is reserved for windows OS -- Set mode to 0 (Disabled)");
+          this.sendSocketNotification("SCREEN_ERROR", "Mode 9 is reserved for windows OS -- Set mode to 0 (Disabled)");
+          this.config.mode = 0;
+        }
+        break;
       default:
         console.error(`[MMM-Pir] [LIB] [SCREEN] Unknow Mode (${this.config.mode}) Set to 0 (Disabled)`);
         this.sendSocketNotification("SCREEN_ERROR", `Unknow Mode (${this.config.mode}) Set to 0 (Disabled)`);
@@ -460,6 +469,13 @@ class SCREEN {
             }
           });
           break;
+        case 9:
+          console.log("[MMM-Pir] [LIB] [SCREEN] [Win Test] by pass check");
+          // by pass check: need to find a command to find monitor state
+          log("[Win Test] Actual:", this.status);
+          log("[Win Test] Wanted:", wanted);
+          resolve(this.resultDisplay(this.status, wanted));
+          break;
       }
     });
   }
@@ -692,6 +708,30 @@ class SCREEN {
               if (err) {
                 console.error(`[MMM-Pir] [LIB] [SCREEN] mode 8, power OFF: ${err}`);
                 this.sendSocketNotification("SCREEN_ERROR", "pinctrl linux command error (mode 8 power OFF)");
+                resolve(false);
+              } else resolve(true);
+            });
+          }
+          break;
+        case 9:
+          if (set) {
+            log("[Win Test] Screen On");
+            let ps = "(Add-Type '[DllImport(\"user32.dll\")]public static extern int PostMessage(int h,int m,int w,int l);' -Name a -Pas)::PostMessage(-1,0x0112,0xF170,-1)";
+            exec(ps, { shell: "powershell.exe" }, (err) => {
+              if (err) {
+                console.error(`[MMM-Pir] [LIB] [SCREEN] mode 9, power ON: ${err}`);
+                this.sendSocketNotification("SCREEN_ERROR", "windows command command error (mode 9 power ON)");
+                resolve(false);
+              } else resolve(true);
+            });
+          }
+          else {
+            log("[Win Test] Screen Off");
+            let ps = "(Add-Type '[DllImport(\"user32.dll\")]public static extern int PostMessage(int h,int m,int w,int l);' -Name a -Pas)::PostMessage(-1,0x0112,0xF170,2)";
+            exec(ps, { shell: "powershell.exe" }, (err) => {
+              if (err) {
+                console.error(`[MMM-Pir] [LIB] [SCREEN] mode 9, power OFF: ${err}`);
+                this.sendSocketNotification("SCREEN_ERROR", "windows command error (mode 9 power OFF)");
                 resolve(false);
               } else resolve(true);
             });
