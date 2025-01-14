@@ -32,6 +32,7 @@
     "pinctrl": "installer/pinctrl.sh",
     "rebuild": "installer/rebuild.sh",
     "reset": "rm -f *.js && rm -rf components/*.js && git reset --hard",
+    "reset:windows": "del *.js && cd components && del *.js && git reset --hard",
     "screenSaver": "installer/screenSaver.sh",
     "presetup": "npm run deps && installer/preinstall.sh",
     "setup": "npm prune",
@@ -41,7 +42,8 @@
     "test:css": "stylelint *.css",
     "test:markdown": "markdownlint-cli2 *.md",
     "test:minify": "cd installer && node minify.js",
-    "update": "installer/update.sh"
+    "update": "installer/update.sh",
+    "update:windows": "call installer/update.cmd"
   },
   "dependencies": {
     "@electron/rebuild": "^3.7.1",
@@ -70,5 +72,5 @@
   "engines": {
     "node": ">=20.9.0 <21 || >=22"
   },
-  "rev": "250106"
+  "rev": "250114"
 }
