@@ -28,7 +28,9 @@ cd MMM-Pir
 npm run setup
 ```
 
-This module will verify if all screen saver is disabled and disable it if needed
+`MMM-Pir` is now available for Windows environment!
+
+For install use `npm run setup:windows` command instead of `npm run setup`
 
 ## Configuration
 
@@ -150,6 +152,7 @@ To display the module insert it in the config.js file.
   * `mode: 6` - use dpms (linux version for debian, ubuntu, ...)
   * `mode: 7` - use labwc (For raspbian 12 with labwc compositor)
   * `mode: 8` - use pinctrl for switching a relay
+  * `mode: 9` - use windows powershell commands (windows 10, 11)
 
 Notes:
 
@@ -163,6 +166,8 @@ For some displays, the `getvcp` commands cause the display to turn-on. In these 
 ------
 
 #### Pir Sensor Configuration
+
+⚠ **Pir Sensor is not available under windows environement**
 
  | Option  | Description | Type | Default |
  | ------- | --- | --- | --- |
@@ -362,6 +367,8 @@ Don't be stupid! Don't create an ON event equal to OFF event
 
 #### Governor Configuration
 
+⚠ **Governor is not available under windows environement**
+
 CPU governor enables the operating system to scale the CPU frequency up or down in order to save power or improve performance.
 
 On each boot of your RPI, your governor is set automaticaly to `ondemand`.
@@ -384,6 +391,8 @@ This configuration allows to change it dynamicaly
 If you want a maximum of CPU power, `performance` is the best choice !
 
 If you want an economy mode of CPU power, `powersave` is the best choice !
+
+⚠ Governor is not available under windows environement
 
 ------
 
@@ -427,6 +436,8 @@ In a terminal try this command:
 cd ~/MagicMirror/modules/MMM-Pir
 npm run update
 ```
+
+For windows user: You have to use `npm run update:windows` command instead of `npm run update`
 
 ### Automatic Update from [updatenotification](https://develop.docs.magicmirror.builders/modules/updatenotification.html) default module
 
