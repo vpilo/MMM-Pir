@@ -1,10 +1,10 @@
 const os = require("node:os");
 
 const util = require("node:util");
-const packageJSON = require("../package.json");
 const Exec = util.promisify(require("node:child_process").exec);
-var exec = require('child_process').exec;
-var events = require('events');
+var exec = require("child_process").exec;
+var events = require("events");
+const packageJSON = require("../package.json");
 
 // color codes
 const reset = "\x1B[0m";
@@ -109,17 +109,17 @@ async function checkOS () {
   }
 }
 
-module.exports.empty = empty
-module.exports.question = question
-module.exports.error = error
-module.exports.warning = warning
-module.exports.success = success
-module.exports.out= out
-module.exports.info = info
-module.exports.moduleName = moduleName
-module.exports.moduleVersion= moduleVersion
-module.exports.moduleRev= moduleRev
-module.exports.checkOS = checkOS
+module.exports.empty = empty;
+module.exports.question = question;
+module.exports.error = error;
+module.exports.warning = warning;
+module.exports.success = success;
+module.exports.out = out;
+module.exports.info = info;
+module.exports.moduleName = moduleName;
+module.exports.moduleVersion = moduleVersion;
+module.exports.moduleRev = moduleRev;
+module.exports.checkOS = checkOS;
 
 /* apt tools */
 
@@ -128,11 +128,11 @@ var _path = {};
 /**
  * Get or set the path for a binary alias
  */
-var path = module.exports.path = function(alias, path) {
-    if (path) {
-        _path[alias] = path;
-    }
-    return _path[alias] || alias;
+var path = module.exports.path = function (alias, path) {
+  if (path) {
+    _path[alias] = path;
+  }
+  return _path[alias] || alias;
 };
 
 /**
@@ -140,95 +140,95 @@ var path = module.exports.path = function(alias, path) {
  * return: null if installed or err if not installed
  */
 function checker (name, callback) {
-    exec(`dpkg -s ${name}`, function(err, stdout, stderr) {
-        if (err) {
-            return callback(0);
-        }
-        return callback(1);
-    });
-};
+  exec(`dpkg -s ${name}`, function (err) {
+    if (err) {
+      return callback(0);
+    }
+    return callback(1);
+  });
+}
 
 function check (names) {
-  var modules = []
-  return new Promise(resolve => {
-    names.forEach((name,i) => {
+  var modules = [];
+  return new Promise((resolve) => {
+    names.forEach((name, i) => {
       checker(name, (result) => {
-        if (result === 0) modules.push(name)
-        if (i === names.length-1) resolve(modules)
-      })
-    })
-  })
-};
+        if (result === 0) modules.push(name);
+        if (i === names.length - 1) resolve(modules);
+      });
+    });
+  });
+}
 
 /**
  * Update the apt cache using apt-get update
  */
-function update(callback = () => {}) {
-    var emitter = new events.EventEmitter();
-    var child = exec('sudo apt-get update', function(err, stdout, stderr) {
-        if (err) {
-            return callback(err);
-        }
+function update (callback = () => {}) {
+  var emitter = new events.EventEmitter();
+  var child = exec("sudo apt-get update", function (err) {
+    if (err) {
+      return callback(err);
+    }
 
-        return callback();
-    });
+    return callback();
+  });
 
-    child.stdout.on('data', function(data) {
-        emitter.emit('stdout', data);
-    });
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
 
-    child.stderr.on('data', function(data) {
-        emitter.emit('stderr', data);
-    });
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
 
-    return emitter;
-};
+  return emitter;
+}
 
 /**
  * Install the module with the given names
  *
  * @param   {String}    names                names of the modules to install
  */
-function install(names, callback) {
-    var emitter = new events.EventEmitter();
-    var child = exec(`sudo apt-get install -y ${names}`, function(err, stdout, stderr) {
-        if (err) {
-            return callback(err);
-        }
+function install (names, callback) {
+  var emitter = new events.EventEmitter();
+  var child = exec(`sudo apt-get install -y ${names}`, function (err) {
+    if (err) {
+      return callback(err);
+    }
 
-        return callback();
-    });
+    return callback();
+  });
 
-    child.stdout.on('data', function(data) {
-        emitter.emit('stdout', data);
-    });
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
 
-    child.stderr.on('data', function(data) {
-        emitter.emit('stderr', data);
-    });
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
 
-    return emitter;
-};
+  return emitter;
+}
 
 /**
  * Uninstall the package with the given name
  */
-function uninstall(name, callback) {
-    var emitter = new events.EventEmitter();
-    var child = exec(util.format('%s remove -y %s', path('apt-get'), name), callback);
+function uninstall (name, callback) {
+  var emitter = new events.EventEmitter();
+  var child = exec(util.format("%s remove -y %s", path("apt-get"), name), callback);
 
-    child.stdout.on('data', function(data) {
-        emitter.emit('stdout', data);
-    });
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
 
-    child.stderr.on('data', function(data) {
-        emitter.emit('stderr', data);
-    });
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
 
-    return emitter;
-};
+  return emitter;
+}
 
-module.exports.check = check
-module.exports.update = update
-module.exports.install = install
-module.exports.uninstall = uninstall
+module.exports.check = check;
+module.exports.update = update;
+module.exports.install = install;
+module.exports.uninstall = uninstall;

@@ -71,5 +71,16 @@
   "engines": {
     "node": ">=20.9.0 <21 || >=22"
   },
-  "rev": "250114"
+  "apt": [
+    "unclutter",
+    "ddcutil",
+    "cec-utils",
+    "python3",
+    "python-is-python3",
+    "python3-gpiozero",
+    "gpiod",
+    "libgpiod2",
+    "libgpiod-dev"
+  ],
+  "rev": "250117"
 }

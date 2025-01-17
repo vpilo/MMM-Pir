@@ -1,12 +1,12 @@
-const utils = require("./utils");
 const packageJSON = require("../package.json");
+const utils = require("./utils");
 
 async function main () {
   // Let's start !
   utils.empty();
   utils.info(`Welcome to ${utils.moduleName()} v${utils.moduleVersion()}`);
   utils.empty();
-  await checkOS()
+  await checkOS();
   utils.empty();
 }
 
@@ -17,9 +17,9 @@ async function checkOS () {
     case "Linux":
       utils.success(`OS Detected: Linux (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
       await updatePackageInfoLinux();
-      await installLinuxDeps()
-      console.log("done")
-      break
+      await installLinuxDeps();
+      console.log("done");
+      break;
     case "Darwin":
       utils.error(`OS Detected: Darwin (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
       utils.error("Automatic installation is not included");
@@ -31,82 +31,83 @@ async function checkOS () {
       installWindowsDeps();
       break;
   }
-  return
+
 }
 
 function updatePackageInfoLinux () {
   utils.empty();
   utils.info("② ➤ Update package informations");
   utils.empty();
-  return new Promise ((resolve) => {
+  return new Promise((resolve) => {
     utils.update((err) => {
       if (err) {
-        utils.error("Error Detected!")
-        process.exit()
+        utils.error("Error Detected!");
+        process.exit();
       }
       resolve();
     })
-      .on('stdout', function(data) {
+      .on("stdout", function (data) {
         utils.out(data.trim());
       })
-      .on('stderr', function(data) {
-        utils.error(data.trim())
+      .on("stderr", function (data) {
+        utils.error(data.trim());
       });
-  })
+  });
 }
 
 async function installLinuxDeps () {
   utils.empty();
   utils.info("③ ➤ Dependencies installer");
   utils.empty();
-  const apt = packageJSON.apt
+  const apt = packageJSON.apt;
   if (!apt || typeof apt === "string") {
-    utils.out("No dependecies needed!")
-    return
+    utils.out("No dependecies needed!");
+    return;
   }
   if (!Array.isArray(apt)) {
-    utils.error("apt format Error!")
-    return
+    utils.error("apt format Error!");
+    return;
   }
   if (!apt.length) {
-    utils.out("No dependecies needed!")
-    return
+    utils.out("No dependecies needed!");
+    return;
   }
-
-  return new Promise (async (resolve) => {
-    var modulesToInstall = await utils.check(apt)
-    modulesToInstall = modulesToInstall.toString().replace(",", " ")
+  /* eslint-disable no-async-promise-executor */
+  // to do better
+  return new Promise(async (resolve) => {
+    var modulesToInstall = await utils.check(apt);
+    modulesToInstall = modulesToInstall.toString().replace(",", " ");
     utils.install(modulesToInstall, (err) => {
       if (err) {
-        utils.error("Error Detected!")
-        process.exit()
+        utils.error("Error Detected!");
+        process.exit();
       }
-      resolve()
+      resolve();
     })
-      .on('stdout', function(data) {
+      .on("stdout", function (data) {
         utils.out(data.trim());
       })
-      .on('stderr', function(data) {
-        utils.error(data.trim())
+      .on("stderr", function (data) {
+        utils.error(data.trim());
       });
-  })
+  });
 }
 
 async function installWindowsDeps () {
   utils.empty();
   utils.info("② ➤ Dependencies installer");
   utils.empty();
-  
-    utils.show("curl", (err,data) => { console.log("--->", err, data)})
-  utils.install("python3", (err,data) => { console.log("--->", err, data)})
-    .on('stdout', function(data) {
+
+  utils.show("curl", (err, data) => { console.log("--->", err, data); });
+  utils.install("python3", (err, data) => { console.log("--->", err, data); })
+    .on("stdout", function (data) {
       utils.out(data.trim());
     })
-    .on('stderr', function(data) {
-      utils.error(data.trim())
+    .on("stderr", function (data) {
+      utils.error(data.trim());
     });
-  
-  return
+
+
 }
 
 main();
