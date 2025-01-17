@@ -72,24 +72,30 @@ async function installLinuxDeps () {
     utils.out("No dependecies needed!");
     return;
   }
-  /* eslint-disable no-async-promise-executor */
-  // to do better
-  return new Promise(async (resolve) => {
-    var modulesToInstall = await utils.check(apt);
-    modulesToInstall = modulesToInstall.toString().replace(",", " ");
-    utils.install(modulesToInstall, (err) => {
-      if (err) {
-        utils.error("Error Detected!");
-        process.exit();
+
+  return new Promise((resolve) => {
+    utils.check(apt, (result) => {
+      if (!result.length) {
+        utils.success("All Dependencies needed are installed !");
+        resolve();
       }
-      resolve();
-    })
-      .on("stdout", function (data) {
-        utils.out(data.trim());
+      let modulesToInstall = result.toString().replace(",", " ");
+      utils.empty();
+      utils.info("Installing missing package...");
+      utils.install(modulesToInstall, (err) => {
+        if (err) {
+          utils.error("Error Detected!");
+          process.exit();
+        }
+        resolve();
       })
-      .on("stderr", function (data) {
-        utils.error(data.trim());
-      });
+        .on("stdout", function (data) {
+          utils.out(data.trim());
+        })
+        .on("stderr", function (data) {
+          utils.error(data.trim());
+        });
+    });
   });
 }
 

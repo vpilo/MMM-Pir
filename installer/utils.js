@@ -148,14 +148,15 @@ function checker (name, callback) {
   });
 }
 
-function check (names) {
+function check (names, callback) {
   var modules = [];
-  return new Promise((resolve) => {
-    names.forEach((name, i) => {
-      checker(name, (result) => {
-        if (result === 0) modules.push(name);
-        if (i === names.length - 1) resolve(modules);
-      });
+  names.forEach((name, i) => {
+    checker(name, (result) => {
+      if (result === 0) {
+        warning(`Missing package: ${name}`);
+        modules.push(name);
+      }
+      if (i === names.length - 1) callback(modules);
     });
   });
 }
