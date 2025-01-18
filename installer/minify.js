@@ -3,6 +3,7 @@
  * @busgounet
 */
 
+const utils = require("./utils");
 const path = require("node:path");
 const { fdir } = require("fdir");
 const esbuild = require("esbuild");
@@ -28,7 +29,8 @@ async function searchFiles () {
     .withPromise();
 
   files = files.concat(components);
-  console.log(`Found: ${files.length} files to install and minify\n`);
+  if (files.length) utils.success(`Found: ${files.length} files to install and minify\n`);
+  else utils.warning("no files found!");
 }
 
 /**
@@ -36,7 +38,7 @@ async function searchFiles () {
  */
 async function minifyFiles () {
   await searchFiles();
-  await Promise.all(files.map((file) => { return minify(file); })).catch(() => process.exit(255));
+  if (files.length) await Promise.all(files.map((file) => { return minify(file); })).catch(() => process.exit(255));
 }
 
 /**
@@ -55,7 +57,7 @@ function minify (file) {
   }
   let pathInResolve = path.resolve(__dirname, file);
   let pathOutResolve = path.resolve(__dirname, FileName);
-  console.log("Process File:", MyFileName);
+  utils.out(`Process File: \x1B[3m${MyFileName}`);
   return new Promise((resolve, reject) => {
     try {
       esbuild.buildSync({
