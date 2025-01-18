@@ -30,8 +30,6 @@ npm run setup
 
 `MMM-Pir` is now available for Windows environment!
 
-For install use `npm run setup:windows` command instead of `npm run setup`
-
 ## Configuration
 
 To display the module insert it in the config.js file.
