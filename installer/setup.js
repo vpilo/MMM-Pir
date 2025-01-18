@@ -1,5 +1,5 @@
-const packageJSON = require("../package.json");
 const utils = require("./utils");
+
 var options = {};
 
 async function main () {
@@ -7,7 +7,7 @@ async function main () {
   utils.empty();
   utils.info(`Welcome to ${utils.moduleName()} v${utils.moduleVersion()}`);
   utils.empty();
-  options = utils.getOptions()
+  options = utils.getOptions();
   await checkOS();
   utils.empty();
 }
@@ -21,7 +21,7 @@ async function checkOS () {
       await updatePackageInfoLinux();
       await installLinuxDeps();
       await installNPMDeps();
-      await installFiles()
+      await installFiles();
       done();
       break;
     case "Darwin":
@@ -125,7 +125,7 @@ async function installWindowsDeps () {
   utils.info("② ➤ Dependencies installer");
   utils.empty();
   // to code under windows env
-  return
+
 }
 
 async function installFiles () {

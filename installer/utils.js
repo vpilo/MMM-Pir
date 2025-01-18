@@ -16,25 +16,25 @@ const cyan = "\x1B[96m";
 
 // installer options
 function getOptions () {
-  var options = packageJSON.installer
+  var options = packageJSON.installer;
   const defaults = {
-    "minify": true,
-    "rebuild": false,
-    "apt": []
-  }
+    minify: true,
+    rebuild: false,
+    apt: []
+  };
   if (!options || typeof options === "string") {
     warning("No installer options!");
     return defaults;
   }
   if (!Array.isArray(options.apt) && options.apt !== undefined) {
     warning("apt format Error!");
-    options.apt = []
+    options.apt = [];
     return options;
   }
   options = configMerge({}, defaults, options);
   return options;
 }
-module.exports.getOptions = getOptions
+module.exports.getOptions = getOptions;
 
 // deep merge
 function configMerge (result) {
