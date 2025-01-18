@@ -33,9 +33,10 @@ async function checkOS () {
       break;
     case "Windows":
       utils.success(`OS Detected: Windows (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
-      await installWindowsDeps();
+      await removeWindowsDeps();
       await installNPMDeps();
-      await minify();
+	  await electronRebuild();
+      await installFiles();
       done();
       break;
   }
@@ -121,14 +122,6 @@ async function installNPMDeps () {
   });
 }
 
-async function installWindowsDeps () {
-  utils.empty();
-  utils.info("② ➤ Dependencies installer");
-  utils.empty();
-  // to code under windows env
-
-}
-
 async function installFiles () {
   utils.empty();
   utils.info("⑤ ➤ Install Files");
@@ -177,7 +170,7 @@ async function electronRebuild () {
   utils.empty();
   utils.info("⑤ ➤ Rebuild MagicMirror...");
   utils.empty();
-  if (!options.rebuild) {
+  if (!options.rebuild || (utils.isWin() && !options.windowsRebuild)) {
     utils.out("electron-rebuild is not needed.");
     return;
   }
@@ -202,6 +195,35 @@ function done () {
   utils.empty();
   utils.success(`${utils.moduleName()} is now installed !`);
   utils.empty();
+}
+
+// Windows
+async function removeWindowsDeps () {
+  utils.empty();
+  utils.info("② ➤ [Windows] Dependencies remover");
+  utils.empty();
+  const npm = options.windowsNPMRemove;
+  if (!npm.length) {
+    utils.out("No dependecies needed!");
+    return;
+  }
+  let modulesToRemove = npm.toString().replace(",", " ");
+  utils.info(`[Windows] removing: ${modulesToRemove}`);
+  return new Promise((resolve) => {
+    utils.npmRemove(modulesToRemove, (err) => {
+      if (err) {
+        utils.error("Error Detected!");
+        process.exit();
+      }
+      resolve();
+    })
+      .on("stdout", function (data) {
+        utils.out(data.trim());
+      })
+      .on("stderr", function (data) {
+        utils.error(data.trim());
+      });
+  })
 }
 
 main();
