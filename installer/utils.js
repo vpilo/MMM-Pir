@@ -146,6 +146,9 @@ async function checkOS () {
       return sysinfo;
     case "Windows_NT":
       sysinfo.type = "Windows";
+      sysinfo.arch = os.arch();
+      sysinfo.name = os.release();
+      sysinfo.version = os.version();
       return sysinfo;
     default:
       sysinfo.type = undefined;
