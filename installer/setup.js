@@ -20,7 +20,7 @@ async function checkOS () {
       await installLinuxDeps();
       await installNPMDeps();
       await minify();
-      console.log("done!");
+      done();
       break;
     case "Darwin":
       utils.error(`OS Detected: Darwin (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
@@ -30,13 +30,16 @@ async function checkOS () {
       break;
     case "Windows":
       utils.success(`OS Detected: Windows (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
-      installWindowsDeps();
+      await installWindowsDeps();
+      await installNPMDeps();
+      await minify();
+      done();
       break;
   }
 
 }
 
-function updatePackageInfoLinux () {
+async function updatePackageInfoLinux () {
   utils.empty();
   utils.info("② ➤ Update package informations");
   utils.empty();
@@ -101,7 +104,7 @@ async function installLinuxDeps () {
   });
 }
 
-function installNPMDeps () {
+async function installNPMDeps () {
   utils.empty();
   utils.info("④ ➤ NPM Package installer");
   utils.empty();
@@ -127,22 +130,35 @@ async function installWindowsDeps () {
   utils.empty();
   utils.info("② ➤ Dependencies installer");
   utils.empty();
-
-  utils.show("curl", (err, data) => { console.log("--->", err, data); });
-  utils.install("python3", (err, data) => { console.log("--->", err, data); })
-    .on("stdout", function (data) {
-      utils.out(data.trim());
-    })
-    .on("stderr", function (data) {
-      utils.error(data.trim());
-    });
+  // to code under windows env
+  return
 }
 
 async function minify () {
   utils.empty();
   utils.info("⑤ ➤ Install Files");
   utils.empty();
-  await utils.minify();
+  return new Promise((resolve) => {
+    utils.minify((err) => {
+      if (err) {
+        utils.error("Error Detected!");
+        process.exit();
+      }
+      resolve();
+    })
+      .on("stdout", function (data) {
+        utils.out(data.trim());
+      })
+      .on("stderr", function (data) {
+        utils.error(data.trim());
+      });
+  });
+}
+
+function done () {
+  utils.empty();
+  utils.success(`${utils.moduleName()} is now installed !`);
+  utils.empty();
 }
 
 main();

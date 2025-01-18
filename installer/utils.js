@@ -3,19 +3,7 @@ const util = require("node:util");
 const Exec = util.promisify(require("node:child_process").exec);
 const exec = require("child_process").exec;
 const events = require("events");
-const Path = require("node:path");
-const { fdir } = require("fdir");
-const esbuild = require("esbuild");
 const packageJSON = require("../package.json");
-
-const isWin = process.platform === "win32";
-const project = packageJSON.name;
-const revision = packageJSON.rev;
-const version = packageJSON.version;
-
-const commentIn = "/**";
-const commentOut = "**/";
-var files = [];
 
 // color codes
 const reset = "\x1B[0m";
@@ -137,7 +125,7 @@ module.exports.checkOS = checkOS;
  * check the currently installed of the module using dpkg -s
  * return: null if installed or err if not installed
  */
-function checker (name, callback) {
+function checker (name, callback = () => {}) {
   exec(`dpkg -s ${name}`, function (err) {
     if (err) {
       return callback(0);
@@ -146,7 +134,7 @@ function checker (name, callback) {
   });
 }
 
-function check (names, callback) {
+function check (names, callback = () => {}) {
   var modules = [];
   names.forEach((name, i) => {
     checker(name, (result) => {
@@ -168,7 +156,6 @@ function update (callback = () => {}) {
     if (err) {
       return callback(err);
     }
-
     return callback();
   });
 
@@ -188,13 +175,12 @@ function update (callback = () => {}) {
  *
  * @param   {String}    names                names of the modules to install
  */
-function install (names, callback) {
+function install (names, callback = () => {}) {
   var emitter = new events.EventEmitter();
   var child = exec(`sudo apt-get install -y ${names}`, function (err) {
     if (err) {
       return callback(err);
     }
-
     return callback();
   });
 
@@ -212,13 +198,12 @@ function install (names, callback) {
 /**
  * Install npm dependencies
  */
-function prune (callback) {
+function prune (callback = () => {}) {
   var emitter = new events.EventEmitter();
   var child = exec("npm prune", function (err) {
     if (err) {
       return callback(err);
     }
-
     return callback();
   });
 
@@ -238,72 +223,27 @@ module.exports.update = update;
 module.exports.install = install;
 module.exports.prune = prune;
 
-/*
- * Code minifier
- * @busgounet
-*/
 
 /**
  * search all javascript files
  */
-async function searchFiles () {
-  const components = await new fdir()
-    .withBasePath()
-    .filter((path) => path.endsWith(".js"))
-    .crawl("./src")
-    .withPromise();
-
-  files = files.concat(components);
-  info(`Found: ${files.length} files to install and minify\n`);
-}
-
-/**
- * Minify all files in array with Promise
- */
-async function minifyFiles () {
-  await searchFiles();
-  await Promise.all(files.map((file) => { return minify(file); })).catch(() => {
-    error("Error Detected");
-    process.exit();
-  });
-}
-
-/**
- * Minify filename with esbuild
- * @param {string} file to minify
- * @returns {boolean} resolved with true
- */
-function minify (file) {
-  var FileName, MyFileName;
-  const modulePath = Path.resolve(__dirname, "../");
-  if (isWin) {
-    FileName = file.replace("src\\", ""); minify;
-    MyFileName = `${project}\\${FileName}`;
-  } else {
-    FileName = file.replace("src/", "");
-    MyFileName = `${project}/${FileName}`;
-  }
-  let pathInResolve = Path.resolve(modulePath, file);
-  let pathOutResolve = Path.resolve(modulePath, FileName);
-  return new Promise((resolve, reject) => {
-    try {
-      out(`Process File: ${MyFileName}`);
-      esbuild.buildSync({
-        entryPoints: [pathInResolve],
-        allowOverwrite: true,
-        minify: true,
-        outfile: pathOutResolve,
-        banner: {
-          js: `${commentIn} ${project}\n  * File: ${MyFileName}\n  * Version: ${version}\n  * Revision: ${revision}\n  * ⚠ This file must not be modified ⚠\n${commentOut}`
-        },
-        footer: {
-          js: `${commentIn} ❤ Coded With Heart by @bugsounet -- https://www.bugsounet.fr ${commentOut}`
-        }
-      });
-      resolve(true);
-    } catch {
-      reject();
+function minify (callback = () => {}) {
+  var emitter = new events.EventEmitter();
+  var child = exec("cd installer && node minify", function (err) {
+    if (err) {
+      return callback(err);
     }
+    return callback();
   });
+
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
+
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
+
+  return emitter;
 }
-module.exports.minify = minifyFiles;
+module.exports.minify = minify;
