@@ -35,7 +35,7 @@ async function checkOS () {
       utils.success(`OS Detected: Windows (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
       await removeWindowsDeps();
       await installNPMDeps();
-	  await electronRebuild();
+      await electronRebuild();
       await installFiles();
       done();
       break;
@@ -223,7 +223,7 @@ async function removeWindowsDeps () {
       .on("stderr", function (data) {
         utils.error(data.trim());
       });
-  })
+  });
 }
 
 main();

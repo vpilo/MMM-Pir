@@ -21,8 +21,8 @@ function getOptions () {
     minify: true,
     rebuild: false,
     apt: [],
-	windowsNPMRemove: [],
-    windowsRebuild: false	
+    windowsNPMRemove: [],
+    windowsRebuild: false
   };
   if (!options || typeof options === "string") {
     warning("No installer options!");
@@ -33,14 +33,14 @@ function getOptions () {
     options.apt = [];
   }
   if (isWin()) {
-	if (!Array.isArray(options.windowsNPMRemove) && options.windowsNPMRemove !== undefined) {
+    if (!Array.isArray(options.windowsNPMRemove) && options.windowsNPMRemove !== undefined) {
       warning("windowsNPMRemove: format Error!");
       options.windowsNPMRemove = [];
     }
-	if (options.windowsRebuild !== undefined && typeof options.windowsRebuild !== "boolean") {
-	  warning("windowsRebuild: format Error!");
-	  options.windowsRebuild = false;
-	}
+    if (options.windowsRebuild !== undefined && typeof options.windowsRebuild !== "boolean") {
+      warning("windowsRebuild: format Error!");
+      options.windowsRebuild = false;
+    }
   }
 
   options = configMerge({}, defaults, options);
@@ -158,9 +158,9 @@ async function checkOS () {
       return sysinfo;
     case "Windows_NT":
       sysinfo.type = "Windows";
-	  sysinfo.arch = os.arch();
-	  sysinfo.name = os.release();
-	  sysinfo.version = os.version();
+      sysinfo.arch = os.arch();
+      sysinfo.name = os.release();
+      sysinfo.version = os.version();
       return sysinfo;
     default:
       sysinfo.type = undefined;
