@@ -6,11 +6,12 @@
 const path = require("node:path");
 const { copyFileSync } = require("node:fs");
 const { fdir } = require("fdir");
+const utils = require("./utils");
+
+const isWin = utils.isWin();
+const project = utils.moduleName();
 
 var files = [];
-var isWin = process.platform === "win32";
-
-let project = require("../package.json").name;
 
 /**
  * search all javascript files
@@ -23,17 +24,19 @@ async function searchFiles () {
     .withPromise();
 
   files = files.concat(components);
-  console.log(`Found: ${files.length} files to install\n`);
+  if (files.length) utils.success(`Found: ${files.length} files to install\n`);
+  else utils.warning("no files found!");
 }
 
 /**
  * Install all files in array with Promise
  */
 async function installFiles () {
-  console.log("⚠ This Tools is reserved for develop only ⚠\n");
   await searchFiles();
-  await Promise.all(files.map((file) => { return install(file); })).catch(() => process.exit(255));
-  console.log("\n✅ All new sources files are copied to the src folder\n");
+  if (files.length) {
+    await Promise.all(files.map((file) => { return install(file); })).catch(() => process.exit(255));
+    utils.success("\n✅ All new sources files are copied to the src folder\n");
+  }
 }
 
 /**
@@ -52,7 +55,7 @@ function install (file) {
   }
   let pathInResolve = path.resolve(__dirname, file);
   let pathOutResolve = path.resolve(__dirname, FileName);
-  console.log("Process File:", MyFileName);
+  utils.out(`Process File: \x1B[3m${MyFileName}`);
   return new Promise((resolve, reject) => {
     try {
       copyFileSync(pathOutResolve, pathInResolve);

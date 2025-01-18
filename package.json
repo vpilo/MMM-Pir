@@ -26,6 +26,7 @@
     "dev:src": "cd installer && node src.js",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
+    "installer": "node installer/setup",
     "lint": "eslint . --config eslint.config.mjs",
     "lint:fix": "eslint . --config eslint.config.mjs --fix",
     "pinctrl": "installer/pinctrl.sh",
@@ -33,10 +34,7 @@
     "reset": "rm -f *.js && rm -rf components/*.js && git reset --hard",
     "reset:windows": "del *.js && cd components && del *.js && git reset --hard",
     "screenSaver": "installer/screenSaver.sh",
-    "presetup": "npm run deps && installer/preinstall.sh",
-    "setup": "npm prune",
-    "postsetup": "installer/postinstall.sh -m -r",
-    "setup:windows": "call installer/windows.cmd",
+    "setup": "node installer/setup",
     "test": "npm run lint",
     "test:css": "stylelint *.css",
     "test:markdown": "markdownlint-cli2 *.md",
@@ -71,5 +69,21 @@
   "engines": {
     "node": ">=20.9.0 <21 || >=22"
   },
-  "rev": "250114"
+  "installer": {
+    "rebuild": true,
+    "apt": [
+      "unclutter",
+      "ddcutil",
+      "cec-utils",
+      "python3",
+      "python-is-python3",
+      "python3-gpiozero",
+      "gpiod",
+      "libgpiod2",
+      "libgpiod-dev"
+    ],
+	  "windowsNPMRemove": ["@electron/rebuild", "node-libgpiod"],
+	  "windowsRebuild": false
+  },
+  "rev": "250117"
 }
