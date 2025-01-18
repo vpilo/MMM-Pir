@@ -291,7 +291,6 @@ function minify (callback = () => {}) {
 
   return emitter;
 }
-module.exports.minify = minify;
 
 function develop (callback = () => {}) {
   var emitter = new events.EventEmitter();
@@ -312,4 +311,26 @@ function develop (callback = () => {}) {
 
   return emitter;
 }
+module.exports.minify = minify;
 module.exports.develop = develop;
+
+function electronRebuild (callback = () => {}) {
+  var emitter = new events.EventEmitter();
+  var child = exec("npx electron-rebuild", function (err) {
+    if (err) {
+      return callback(err);
+    }
+    return callback();
+  });
+
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
+
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
+
+  return emitter;
+}
+module.exports.electronRebuild = electronRebuild;

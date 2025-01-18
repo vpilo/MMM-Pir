@@ -21,6 +21,7 @@ async function checkOS () {
       await updatePackageInfoLinux();
       await installLinuxDeps();
       await installNPMDeps();
+      await electronRebuild();
       await installFiles();
       done();
       break;
@@ -168,6 +169,31 @@ async function develop () {
       })
       .on("stderr", function (data) {
         utils.error(data.trim());
+      });
+  });
+}
+
+async function electronRebuild () {
+  utils.empty();
+  utils.info("⑤ ➤ Rebuild MagicMirror...");
+  utils.empty();
+  if (!options.rebuild) {
+    utils.out("electron-rebuild is not needed.");
+    return;
+  }
+  return new Promise((resolve) => {
+    utils.electronRebuild((err) => {
+      if (err) {
+        utils.error("Error Detected!");
+        process.exit();
+      }
+      resolve();
+    })
+      .on("stdout", function (data) {
+        utils.out(data.trim());
+      })
+      .on("stderr", function (data) {
+        utils.out(data.trim());
       });
   });
 }
