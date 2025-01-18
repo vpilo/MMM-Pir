@@ -13,7 +13,7 @@ async function main () {
 }
 
 async function checkOS () {
-  utils.info("① ➤ Checking OS...");
+  utils.info("➤ Checking OS...");
   const sysinfo = await utils.checkOS();
   switch (sysinfo.type) {
     case "Linux":
@@ -45,7 +45,7 @@ async function checkOS () {
 
 async function updatePackageInfoLinux () {
   utils.empty();
-  utils.info("② ➤ Update package informations");
+  utils.info("➤ Update package informations");
   utils.empty();
   return new Promise((resolve) => {
     utils.update((err) => {
@@ -66,7 +66,7 @@ async function updatePackageInfoLinux () {
 
 async function installLinuxDeps () {
   utils.empty();
-  utils.info("③ ➤ Dependencies installer");
+  utils.info("➤ Dependencies installer");
   utils.empty();
   const apt = options.apt;
   if (!apt.length) {
@@ -102,7 +102,7 @@ async function installLinuxDeps () {
 
 async function installNPMDeps () {
   utils.empty();
-  utils.info("④ ➤ NPM Package installer");
+  utils.info("➤ NPM Package installer");
   utils.empty();
 
   return new Promise((resolve) => {
@@ -124,7 +124,7 @@ async function installNPMDeps () {
 
 async function installFiles () {
   utils.empty();
-  utils.info("⑤ ➤ Install Files");
+  utils.info("➤ Install Files");
   utils.empty();
   if (options.minify) await minify();
   else await develop();
@@ -168,7 +168,7 @@ async function develop () {
 
 async function electronRebuild () {
   utils.empty();
-  utils.info("⑤ ➤ Rebuild MagicMirror...");
+  utils.info("➤ Rebuild MagicMirror...");
   utils.empty();
   if (!options.rebuild || (utils.isWin() && !options.windowsRebuild)) {
     utils.out("electron-rebuild is not needed.");
@@ -200,7 +200,7 @@ function done () {
 // Windows
 async function removeWindowsDeps () {
   utils.empty();
-  utils.info("② ➤ [Windows] Dependencies remover");
+  utils.info("➤ [Windows] Dependencies remover");
   utils.empty();
   const npm = options.windowsNPMRemove;
   if (!npm.length) {
