@@ -14,6 +14,52 @@ const gray = "\x1B[2m";
 const blue = "\x1B[94m";
 const cyan = "\x1B[96m";
 
+// installer options
+function getOptions () {
+  var options = packageJSON.installer
+  const defaults = {
+    "minify": true,
+    "rebuild": false,
+    "apt": []
+  }
+  if (!options || typeof options === "string") {
+    warning("No installer options!");
+    return defaults;
+  }
+  if (!Array.isArray(options.apt) && options.apt !== undefined) {
+    warning("apt format Error!");
+    options.apt = []
+    return options;
+  }
+  options = configMerge({}, defaults, options);
+  return options;
+}
+module.exports.getOptions = getOptions
+
+// deep merge
+function configMerge (result) {
+  var stack = Array.prototype.slice.call(arguments, 1);
+  var item;
+  var key;
+  while (stack.length) {
+    item = stack.shift();
+    for (key in item) {
+      if (item.hasOwnProperty(key)) {
+        if (typeof result[key] === "object" && result[key] && Object.prototype.toString.call(result[key]) !== "[object Array]") {
+          if (typeof item[key] === "object" && item[key] !== null) {
+            result[key] = configMerge({}, result[key], item[key]);
+          } else {
+            result[key] = item[key];
+          }
+        } else {
+          result[key] = item[key];
+        }
+      }
+    }
+  }
+  return result;
+}
+
 function message (text, color) {
   console.log(`${color}${text}${reset}`);
 }
@@ -223,7 +269,6 @@ module.exports.update = update;
 module.exports.install = install;
 module.exports.prune = prune;
 
-
 /**
  * search all javascript files
  */
@@ -247,3 +292,24 @@ function minify (callback = () => {}) {
   return emitter;
 }
 module.exports.minify = minify;
+
+function develop (callback = () => {}) {
+  var emitter = new events.EventEmitter();
+  var child = exec("cd installer && node dev", function (err) {
+    if (err) {
+      return callback(err);
+    }
+    return callback();
+  });
+
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
+
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
+
+  return emitter;
+}
+module.exports.develop = develop;

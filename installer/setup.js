@@ -1,11 +1,13 @@
 const packageJSON = require("../package.json");
 const utils = require("./utils");
+var options = {};
 
 async function main () {
   // Let's start !
   utils.empty();
   utils.info(`Welcome to ${utils.moduleName()} v${utils.moduleVersion()}`);
   utils.empty();
+  options = utils.getOptions()
   await checkOS();
   utils.empty();
 }
@@ -19,7 +21,7 @@ async function checkOS () {
       await updatePackageInfoLinux();
       await installLinuxDeps();
       await installNPMDeps();
-      await minify();
+      await installFiles()
       done();
       break;
     case "Darwin":
@@ -64,15 +66,7 @@ async function installLinuxDeps () {
   utils.empty();
   utils.info("③ ➤ Dependencies installer");
   utils.empty();
-  const apt = packageJSON.apt;
-  if (!apt || typeof apt === "string") {
-    utils.out("No dependecies needed!");
-    return;
-  }
-  if (!Array.isArray(apt)) {
-    utils.error("apt format Error!");
-    return;
-  }
+  const apt = options.apt;
   if (!apt.length) {
     utils.out("No dependecies needed!");
     return;
@@ -134,12 +128,35 @@ async function installWindowsDeps () {
   return
 }
 
-async function minify () {
+async function installFiles () {
   utils.empty();
   utils.info("⑤ ➤ Install Files");
   utils.empty();
+  if (options.minify) await minify();
+  else await develop();
+}
+
+async function minify () {
   return new Promise((resolve) => {
     utils.minify((err) => {
+      if (err) {
+        utils.error("Error Detected!");
+        process.exit();
+      }
+      resolve();
+    })
+      .on("stdout", function (data) {
+        utils.out(data.trim());
+      })
+      .on("stderr", function (data) {
+        utils.error(data.trim());
+      });
+  });
+}
+
+async function develop () {
+  return new Promise((resolve) => {
+    utils.develop((err) => {
       if (err) {
         utils.error("Error Detected!");
         process.exit();
