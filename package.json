@@ -84,7 +84,9 @@
       "gpiod",
       "libgpiod2",
       "libgpiod-dev"
-    ]
+    ],
+	  "windowsNPMRemove": ["@electron/rebuild", "node-libgpiod"],
+	  "windowsRebuild": false
   },
   "rev": "250117"
 }
