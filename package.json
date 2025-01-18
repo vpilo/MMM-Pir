@@ -26,6 +26,7 @@
     "dev:src": "cd installer && node src.js",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
+    "installer": "node installer/setup",
     "lint": "eslint . --config eslint.config.mjs",
     "lint:fix": "eslint . --config eslint.config.mjs --fix",
     "pinctrl": "installer/pinctrl.sh",
