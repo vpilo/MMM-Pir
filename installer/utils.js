@@ -334,3 +334,9 @@ function electronRebuild (callback = () => {}) {
   return emitter;
 }
 module.exports.electronRebuild = electronRebuild;
+
+// use windows platform ?
+function isWin() {
+  return process.platform === "win32";
+}
+module.exports.isWin = isWin;

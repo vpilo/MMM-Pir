@@ -3,15 +3,15 @@
  * @busgounet
 */
 
-const utils = require("./utils");
 const path = require("node:path");
 const { copyFileSync } = require("node:fs");
 const { fdir } = require("fdir");
+const utils = require("./utils");
+
+const isWin = utils.isWin();
+const project = utils.moduleName();
 
 var files = [];
-var isWin = process.platform === "win32";
-
-let project = require("../package.json").name;
 
 /**
  * search all javascript files

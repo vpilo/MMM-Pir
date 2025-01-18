@@ -3,20 +3,20 @@
  * @busgounet
 */
 
-const utils = require("./utils");
 const path = require("node:path");
 const { fdir } = require("fdir");
 const esbuild = require("esbuild");
+const utils = require("./utils");
+
+const isWin = utils.isWin();
+const project = utils.moduleName();
+const revision = utils.moduleRev();
+const version = utils.moduleVersion();
+
+const commentIn = "/**";
+const commentOut = "**/";
 
 var files = [];
-var isWin = process.platform === "win32";
-
-let project = require("../package.json").name;
-let revision = require("../package.json").rev;
-let version = require("../package.json").version;
-
-let commentIn = "/**";
-let commentOut = "**/";
 
 /**
  * search all javascript files
