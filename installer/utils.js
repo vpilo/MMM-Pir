@@ -20,17 +20,29 @@ function getOptions () {
   const defaults = {
     minify: true,
     rebuild: false,
-    apt: []
+    apt: [],
+	windowsNPMRemove: [],
+    windowsRebuild: false	
   };
   if (!options || typeof options === "string") {
     warning("No installer options!");
     return defaults;
   }
   if (!Array.isArray(options.apt) && options.apt !== undefined) {
-    warning("apt format Error!");
+    warning("apt: format Error!");
     options.apt = [];
-    return options;
   }
+  if (isWin()) {
+	if (!Array.isArray(options.windowsNPMRemove) && options.windowsNPMRemove !== undefined) {
+      warning("windowsNPMRemove: format Error!");
+      options.windowsNPMRemove = [];
+    }
+	if (options.windowsRebuild !== undefined && typeof options.windowsRebuild !== "boolean") {
+	  warning("windowsRebuild: format Error!");
+	  options.windowsRebuild = false;
+	}
+  }
+
   options = configMerge({}, defaults, options);
   return options;
 }
@@ -146,9 +158,9 @@ async function checkOS () {
       return sysinfo;
     case "Windows_NT":
       sysinfo.type = "Windows";
-      sysinfo.arch = os.arch();
-      sysinfo.name = os.release();
-      sysinfo.version = os.version();
+	  sysinfo.arch = os.arch();
+	  sysinfo.name = os.release();
+	  sysinfo.version = os.version();
       return sysinfo;
     default:
       sysinfo.type = undefined;
@@ -267,10 +279,34 @@ function prune (callback = () => {}) {
   return emitter;
 }
 
+/**
+ * Remove npm dependencies
+ */
+function npmRemove (names, callback = () => {}) {
+  var emitter = new events.EventEmitter();
+  var child = exec(`npm remove ${names}`, function (err) {
+    if (err) {
+      return callback(err);
+    }
+    return callback();
+  });
+
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
+
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
+
+  return emitter;
+}
+
 module.exports.check = check;
 module.exports.update = update;
 module.exports.install = install;
 module.exports.prune = prune;
+module.exports.npmRemove = npmRemove;
 
 /**
  * search all javascript files
@@ -317,6 +353,7 @@ function develop (callback = () => {}) {
 module.exports.minify = minify;
 module.exports.develop = develop;
 
+// electron need to be rebuilded
 function electronRebuild (callback = () => {}) {
   var emitter = new events.EventEmitter();
   var child = exec("npx electron-rebuild", function (err) {
