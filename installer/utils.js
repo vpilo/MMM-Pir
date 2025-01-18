@@ -1,10 +1,21 @@
 const os = require("node:os");
-
 const util = require("node:util");
 const Exec = util.promisify(require("node:child_process").exec);
-var exec = require("child_process").exec;
-var events = require("events");
+const exec = require("child_process").exec;
+const events = require("events");
+const Path = require("node:path");
+const { fdir } = require("fdir");
+const esbuild = require("esbuild");
 const packageJSON = require("../package.json");
+
+const isWin = process.platform === "win32";
+const project = packageJSON.name;
+const revision = packageJSON.rev;
+const version = packageJSON.version;
+
+const commentIn = "/**";
+const commentOut = "**/";
+var files = [];
 
 // color codes
 const reset = "\x1B[0m";
@@ -14,7 +25,6 @@ const green = "\x1B[92m";
 const gray = "\x1B[2m";
 const blue = "\x1B[94m";
 const cyan = "\x1B[96m";
-//const pink = "\x1B[95m";
 
 function message (text, color) {
   console.log(`${color}${text}${reset}`);
@@ -123,18 +133,6 @@ module.exports.checkOS = checkOS;
 
 /* apt tools */
 
-var _path = {};
-
-/**
- * Get or set the path for a binary alias
- */
-var path = module.exports.path = function (alias, path) {
-  if (path) {
-    _path[alias] = path;
-  }
-  return _path[alias] || alias;
-};
-
 /**
  * check the currently installed of the module using dpkg -s
  * return: null if installed or err if not installed
@@ -212,11 +210,17 @@ function install (names, callback) {
 }
 
 /**
- * Uninstall the package with the given name
+ * Install npm dependencies
  */
-function uninstall (name, callback) {
+function prune (callback) {
   var emitter = new events.EventEmitter();
-  var child = exec(util.format("%s remove -y %s", path("apt-get"), name), callback);
+  var child = exec("npm prune", function (err) {
+    if (err) {
+      return callback(err);
+    }
+
+    return callback();
+  });
 
   child.stdout.on("data", function (data) {
     emitter.emit("stdout", data);
@@ -232,4 +236,74 @@ function uninstall (name, callback) {
 module.exports.check = check;
 module.exports.update = update;
 module.exports.install = install;
-module.exports.uninstall = uninstall;
+module.exports.prune = prune;
+
+/*
+ * Code minifier
+ * @busgounet
+*/
+
+/**
+ * search all javascript files
+ */
+async function searchFiles () {
+  const components = await new fdir()
+    .withBasePath()
+    .filter((path) => path.endsWith(".js"))
+    .crawl("./src")
+    .withPromise();
+
+  files = files.concat(components);
+  info(`Found: ${files.length} files to install and minify\n`);
+}
+
+/**
+ * Minify all files in array with Promise
+ */
+async function minifyFiles () {
+  await searchFiles();
+  await Promise.all(files.map((file) => { return minify(file); })).catch(() => {
+    error("Error Detected");
+    process.exit();
+  });
+}
+
+/**
+ * Minify filename with esbuild
+ * @param {string} file to minify
+ * @returns {boolean} resolved with true
+ */
+function minify (file) {
+  var FileName, MyFileName;
+  const modulePath = Path.resolve(__dirname, "../");
+  if (isWin) {
+    FileName = file.replace("src\\", ""); minify;
+    MyFileName = `${project}\\${FileName}`;
+  } else {
+    FileName = file.replace("src/", "");
+    MyFileName = `${project}/${FileName}`;
+  }
+  let pathInResolve = Path.resolve(modulePath, file);
+  let pathOutResolve = Path.resolve(modulePath, FileName);
+  return new Promise((resolve, reject) => {
+    try {
+      out(`Process File: ${MyFileName}`);
+      esbuild.buildSync({
+        entryPoints: [pathInResolve],
+        allowOverwrite: true,
+        minify: true,
+        outfile: pathOutResolve,
+        banner: {
+          js: `${commentIn} ${project}\n  * File: ${MyFileName}\n  * Version: ${version}\n  * Revision: ${revision}\n  * ⚠ This file must not be modified ⚠\n${commentOut}`
+        },
+        footer: {
+          js: `${commentIn} ❤ Coded With Heart by @bugsounet -- https://www.bugsounet.fr ${commentOut}`
+        }
+      });
+      resolve(true);
+    } catch {
+      reject();
+    }
+  });
+}
+module.exports.minify = minifyFiles;

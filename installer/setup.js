@@ -18,7 +18,9 @@ async function checkOS () {
       utils.success(`OS Detected: Linux (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
       await updatePackageInfoLinux();
       await installLinuxDeps();
-      console.log("done");
+      await installNPMDeps();
+      await minify();
+      console.log("done!");
       break;
     case "Darwin":
       utils.error(`OS Detected: Darwin (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
@@ -99,6 +101,28 @@ async function installLinuxDeps () {
   });
 }
 
+function installNPMDeps () {
+  utils.empty();
+  utils.info("④ ➤ NPM Package installer");
+  utils.empty();
+
+  return new Promise((resolve) => {
+    utils.prune((err) => {
+      if (err) {
+        utils.error("Error Detected!");
+        process.exit();
+      }
+      resolve();
+    })
+      .on("stdout", function (data) {
+        utils.out(data.trim());
+      })
+      .on("stderr", function (data) {
+        utils.error(data.trim());
+      });
+  });
+}
+
 async function installWindowsDeps () {
   utils.empty();
   utils.info("② ➤ Dependencies installer");
@@ -112,8 +136,13 @@ async function installWindowsDeps () {
     .on("stderr", function (data) {
       utils.error(data.trim());
     });
+}
 
-
+async function minify () {
+  utils.empty();
+  utils.info("⑤ ➤ Install Files");
+  utils.empty();
+  await utils.minify();
 }
 
 main();
