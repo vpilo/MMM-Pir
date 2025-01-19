@@ -1,6 +1,30 @@
 #!/bin/bash
 
-source installer/utils.sh
+# color codes
+_reset="\033[0m"
+_red="\033[91m"
+_orange="\033[93m"
+_green="\033[92m"
+_blue="\033[94m"
+
+# Display a message in color
+# $1 - message to display
+# $2 - color to use
+Installer_message() {
+  echo -e "$2$1$_reset"
+}
+
+# Displays a error in red
+Installer_error() { Installer_message "$1" "$_red" 1>&2 ;}
+
+# Displays a warning in yellow
+Installer_warning() { Installer_message "$1" "$_orange" ;}
+
+# Displays a success in green
+Installer_success() { Installer_message "$1" "$_green" ;}
+
+# Displays an information in blue
+Installer_info() { Installer_message "$1" "$_blue" ;}
 
 # Disable Screensaver
 ### Part of script of @sdetweil magicmirror_script ###
