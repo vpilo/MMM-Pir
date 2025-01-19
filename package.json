@@ -20,7 +20,7 @@
   "author": "bugsounet",
   "main": "MMM-Pir.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
+    "clean": "node installer/clean",
     "deps": "node installer/deps",
     "dev": "node installer/dev",
     "dev:src": "node installer/src",
