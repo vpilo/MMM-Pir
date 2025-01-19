@@ -38,7 +38,7 @@ async function searchFiles () {
  */
 async function minifyFiles () {
   await searchFiles();
-  if (files.length) await Promise.all(files.map((file) => { return minify(file); })).catch(() => process.exit(255));
+  if (files.length) await Promise.all(files.map((file) => { return minify(file); })).catch(() => process.exit(1));
 }
 
 /**

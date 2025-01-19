@@ -27,7 +27,7 @@ async function checkOS () {
       utils.error(`OS Detected: Darwin (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
       utils.error("Automatic installation is not included");
       utils.empty();
-      process.exit();
+      process.exit(1);
       break;
     case "Windows":
       utils.success(`OS Detected: Windows (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);

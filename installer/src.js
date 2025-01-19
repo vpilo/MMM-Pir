@@ -34,7 +34,7 @@ async function searchFiles () {
 async function installFiles () {
   await searchFiles();
   if (files.length) {
-    await Promise.all(files.map((file) => { return install(file); })).catch(() => process.exit(255));
+    await Promise.all(files.map((file) => { return install(file); })).catch(() => process.exit(1));
     utils.success("\n✅ All new sources files are copied to the src folder\n");
   }
 }
