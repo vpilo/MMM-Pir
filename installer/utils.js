@@ -361,6 +361,7 @@ function execCMD (command, callback = () => {}) {
 }
 
 async function moduleReset () {
+  info("➤ Cleaning js files and reset branch...");
   let moduleRoot = path.resolve(__dirname, "../");
   if (isWin()) {
     await execCMD(`del ${moduleRoot}\\*.js`);
@@ -374,6 +375,7 @@ async function moduleReset () {
 module.exports.moduleReset = moduleReset;
 
 async function moduleClean () {
+  info("➤ Cleaning js node_modules...");
   let moduleRoot = path.resolve(__dirname, "../");
   if (isWin()) {
     await execCMD(`rmdir ${moduleRoot}\\node_modules`);
@@ -384,6 +386,7 @@ async function moduleClean () {
 module.exports.moduleClean = moduleClean;
 
 function moduleSetup (callback = () => {}) {
+  info("➤ Setup...");
   var emitter = new events.EventEmitter();
   var child = exec("npm run setup", function (err) {
     if (err) {
@@ -403,18 +406,47 @@ function moduleSetup (callback = () => {}) {
   return emitter;
 }
 
-async function moduleUpdate (callback = () => {}) {
-  info("➤ Cleaning...");
-  await execCMD("npm run reset");
+function modulePull (callback = () => {}) {
   info("➤ Updating Branch...");
-  await execCMD("git pull");
-  info("➤ Setup...");
-  moduleSetup((err) => {
+  var emitter = new events.EventEmitter();
+  var child = exec("git pull", function (err) {
+    if (err) {
+      return callback(err);
+    }
+    return callback();
+  });
+
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
+
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
+
+  return emitter;
+}
+
+async function moduleUpdate (callback = () => {}) {
+  await moduleReset();
+  await modulePull((err) => {
     if (err) {
       error("Error Detected!");
       process.exit(1);
     }
-    callback();
+    moduleSetup((err) => {
+      if (err) {
+        error("Error Detected!");
+        process.exit(1);
+      }
+      return callback();
+    })
+      .on("stdout", function (data) {
+        out(data.trim());
+      })
+      .on("stderr", function (data) {
+        error(data.trim());
+      });
   })
     .on("stdout", function (data) {
       out(data.trim());
@@ -424,3 +456,15 @@ async function moduleUpdate (callback = () => {}) {
     });
 }
 module.exports.moduleUpdate = moduleUpdate;
+
+async function moduleRebuild (callback = () => {}) {
+  await moduleClean();
+  await moduleUpdate((err) => {
+    if (err) {
+      error("Error Detected!");
+      process.exit(1);
+    }
+    return callback();
+  });
+}
+module.exports.moduleRebuild = moduleRebuild;

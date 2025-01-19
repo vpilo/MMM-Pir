@@ -29,7 +29,7 @@
     "lint": "eslint . --config .eslint.config.mjs",
     "lint:fix": "eslint . --config .eslint.config.mjs --fix",
     "pinctrl": "installer/pinctrl.sh",
-    "rebuild": "installer/rebuild.sh",
+    "rebuild": "node installer/rebuild",
     "reset": "node installer/reset",
     "screenSaver": "installer/screenSaver.sh",
     "setup": "node installer/setup",
