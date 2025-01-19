@@ -20,7 +20,7 @@
   "author": "bugsounet",
   "main": "MMM-Pir.js",
   "scripts": {
-    "clean": "rm -rf node_modules package-lock.json",
+    "clean": "rm -rf node_modules",
     "deps": "node installer/deps",
     "dev": "node installer/dev",
     "dev:src": "node installer/src",
@@ -30,8 +30,7 @@
     "lint:fix": "eslint . --config .eslint.config.mjs --fix",
     "pinctrl": "installer/pinctrl.sh",
     "rebuild": "installer/rebuild.sh",
-    "reset": "rm -f *.js && rm -rf components/*.js && git reset --hard",
-    "reset:windows": "del *.js && cd components && del *.js && git reset --hard",
+    "reset": "node installer/reset",
     "screenSaver": "installer/screenSaver.sh",
     "setup": "node installer/setup",
     "test": "npm run lint",

@@ -4,6 +4,7 @@ const Exec = util.promisify(require("node:child_process").exec);
 const exec = require("child_process").exec;
 const events = require("events");
 const packageJSON = require("../package.json");
+const path = require("node:path");
 
 // color codes
 const reset = "\x1B[0m";
@@ -104,7 +105,7 @@ function moduleRev () {
 module.exports.moduleRev = moduleRev;
 
 // checkOS
-async function execCMD (command) {
+async function execOSCmd (command) {
   const { stdout, stderr } = await Exec(command);
   if (stderr) return "Error";
   else return stdout.trim();
@@ -122,15 +123,15 @@ async function checkOS () {
   switch (type) {
     case "Linux":
       sysinfo.type = "Linux";
-      sysinfo.arch = await execCMD("uname -m");
-      sysinfo.name = await execCMD("cat /etc/*release | grep ^ID= | cut -f2 -d=");
-      sysinfo.version = await execCMD("cat /etc/*release | grep ^VERSION_ID= | cut -f2 -d= | tr -d '\"'");
+      sysinfo.arch = await execOSCmd("uname -m");
+      sysinfo.name = await execOSCmd("cat /etc/*release | grep ^ID= | cut -f2 -d=");
+      sysinfo.version = await execOSCmd("cat /etc/*release | grep ^VERSION_ID= | cut -f2 -d= | tr -d '\"'");
       return sysinfo;
     case "Darwin":
       sysinfo.type = "Darwin";
-      sysinfo.arch = await execCMD("uname -m");
-      sysinfo.name = await execCMD("sw_vers -productName");
-      sysinfo.version = await execCMD("sw_vers -productVersion");
+      sysinfo.arch = await execOSCmd("uname -m");
+      sysinfo.name = await execOSCmd("sw_vers -productName");
+      sysinfo.version = await execOSCmd("sw_vers -productVersion");
       return sysinfo;
     case "Windows_NT":
       sysinfo.type = "Windows";
@@ -345,3 +346,30 @@ function isWin () {
   return process.platform === "win32";
 }
 module.exports.isWin = isWin;
+
+function execCMD (command, callback = () => {}) {
+  return new Promise ((resolve) => {
+    var child = exec(`${command}`, function (err) {
+      if (err) {
+        error(`Error on ${command}:`);
+        error(err);
+        process.exit(1);
+      }
+      resolve(callback());
+    });
+  });
+}
+
+async function moduleReset () {
+  let moduleRoot = path.resolve(__dirname, "../");
+  if (isWin()) {
+    await execCMD(`del ${moduleRoot}/*.js`);
+    await execCMD(`rmdir ${moduleRoot}/components`);
+  } else {
+    await execCMD(`rm -f ${moduleRoot}/*.js`);
+    await execCMD(`rm -rf ${moduleRoot}/components`);
+  }
+  await execCMD("git reset --hard");
+  success("Done!");
+}
+module.exports.moduleReset = moduleReset;

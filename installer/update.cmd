@@ -18,7 +18,7 @@ echo.
 echo Cleaning MMM-Pir Core
 echo ----
 echo.
-call npm run reset:windows
+call npm run reset
 exit /b
 
 :pull
@@ -34,5 +34,5 @@ echo.
 echo Setup MMM-Pir
 echo ----
 echo.
-call npm run setup:windows
+call npm run setup
 exit /b
