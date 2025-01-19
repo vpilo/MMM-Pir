@@ -14,40 +14,6 @@ const gray = "\x1B[2m";
 const blue = "\x1B[94m";
 const cyan = "\x1B[96m";
 
-// installer options
-function getOptions () {
-  var options = packageJSON.installer;
-  const defaults = {
-    minify: true,
-    rebuild: false,
-    apt: [],
-    windowsNPMRemove: [],
-    windowsRebuild: false
-  };
-  if (!options || typeof options === "string") {
-    warning("No installer options!");
-    return defaults;
-  }
-  if (!Array.isArray(options.apt) && options.apt !== undefined) {
-    warning("apt: format Error!");
-    options.apt = [];
-  }
-  if (isWin()) {
-    if (!Array.isArray(options.windowsNPMRemove) && options.windowsNPMRemove !== undefined) {
-      warning("windowsNPMRemove: format Error!");
-      options.windowsNPMRemove = [];
-    }
-    if (options.windowsRebuild !== undefined && typeof options.windowsRebuild !== "boolean") {
-      warning("windowsRebuild: format Error!");
-      options.windowsRebuild = false;
-    }
-  }
-
-  options = configMerge({}, defaults, options);
-  return options;
-}
-module.exports.getOptions = getOptions;
-
 // deep merge
 function configMerge (result) {
   var stack = Array.prototype.slice.call(arguments, 1);
@@ -71,6 +37,7 @@ function configMerge (result) {
   }
   return result;
 }
+module.exports.configMerge = configMerge;
 
 function message (text, color) {
   console.log(`${color}${text}${reset}`);
@@ -80,54 +47,63 @@ function message (text, color) {
 function empty () {
   message("", reset);
 }
+module.exports.empty = empty;
 
 // Display question in cyan
 function question (text) {
   message(text, cyan);
 }
+module.exports.question = question;
 
 // Display a error in red
 function error (text) {
   message(text, red);
 }
+module.exports.error = error;
 
 // Display a warning in yellow
 function warning (text) {
   message(text, orange);
 }
+module.exports.warning = warning;
 
 // Display a success in green
 function success (text) {
   message(text, green);
 }
+module.exports.success = success;
 
 // Display out std message in gray
 function out (text) {
   message(text, gray);
 }
+module.exports.out = out;
 
 // Display an information in blue
 function info (text) {
   message(text, blue);
 }
+module.exports.info = info;
 
 // Display module Name
 function moduleName () {
   return packageJSON.name || "Unknow";
 }
+module.exports.moduleName = moduleName;
 
 // Display module Version
 function moduleVersion () {
   return packageJSON.version || "X.Y.Z";
 }
+module.exports.moduleVersion = moduleVersion;
 
 // Display module rev date
 function moduleRev () {
   return packageJSON.Rev || "------";
 }
+module.exports.moduleRev = moduleRev;
 
 // checkOS
-
 async function execCMD (command) {
   const { stdout, stderr } = await Exec(command);
   if (stderr) return "Error";
@@ -167,17 +143,6 @@ async function checkOS () {
       return sysinfo;
   }
 }
-
-module.exports.empty = empty;
-module.exports.question = question;
-module.exports.error = error;
-module.exports.warning = warning;
-module.exports.success = success;
-module.exports.out = out;
-module.exports.info = info;
-module.exports.moduleName = moduleName;
-module.exports.moduleVersion = moduleVersion;
-module.exports.moduleRev = moduleRev;
 module.exports.checkOS = checkOS;
 
 /* apt tools */
