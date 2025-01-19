@@ -15,9 +15,6 @@ const version = utils.moduleVersion();
 
 const moduleRoot = path.resolve(__dirname, "../");
 
-const commentIn = "/**";
-const commentOut = "**/";
-
 var files = [];
 
 /**
@@ -66,10 +63,10 @@ function minify (FileIn) {
         minify: true,
         outfile: FileOut,
         banner: {
-          js: `${commentIn} ${project}\n  * File: ${MyFileName}\n  * Version: ${version}\n  * Revision: ${revision}\n  * ⚠ This file must not be modified ⚠\n${commentOut}`
+          js: `/** ${project}\n  * File: ${MyFileName}\n  * Version: ${version}\n  * Revision: ${revision}\n  * ⚠ This file must not be modified ⚠\n**/`
         },
         footer: {
-          js: `${commentIn} ❤ Coded With Heart by @bugsounet -- https://www.bugsounet.fr ${commentOut}`
+          js: `/** ❤ Coded With Heart by @bugsounet -- https://www.bugsounet.fr **/`
         }
       });
       resolve(true);
