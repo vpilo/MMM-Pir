@@ -3,8 +3,8 @@ const util = require("node:util");
 const Exec = util.promisify(require("node:child_process").exec);
 const exec = require("child_process").exec;
 const events = require("events");
-const packageJSON = require("../package.json");
 const path = require("node:path");
+const packageJSON = require("../package.json");
 
 // color codes
 const reset = "\x1B[0m";
@@ -348,8 +348,8 @@ function isWin () {
 module.exports.isWin = isWin;
 
 function execCMD (command, callback = () => {}) {
-  return new Promise ((resolve) => {
-    var child = exec(`${command}`, function (err) {
+  return new Promise((resolve) => {
+    exec(`${command}`, function (err) {
       if (err) {
         error(`Error on ${command}:`);
         error(err);
@@ -363,8 +363,8 @@ function execCMD (command, callback = () => {}) {
 async function moduleReset () {
   let moduleRoot = path.resolve(__dirname, "../");
   if (isWin()) {
-    await execCMD(`del ${moduleRoot}/*.js`);
-    await execCMD(`rmdir ${moduleRoot}/components`);
+    await execCMD(`del ${moduleRoot}\\*.js`);
+    await execCMD(`rmdir ${moduleRoot}\\components`);
   } else {
     await execCMD(`rm -f ${moduleRoot}/*.js`);
     await execCMD(`rm -rf ${moduleRoot}/components`);
@@ -373,3 +373,14 @@ async function moduleReset () {
   success("Done!");
 }
 module.exports.moduleReset = moduleReset;
+
+async function moduleClean () {
+  let moduleRoot = path.resolve(__dirname, "../");
+  if (isWin()) {
+    await execCMD(`rmdir ${moduleRoot}\\node_modules`);
+  } else {
+    await execCMD(`rm -rf ${moduleRoot}/node_modules`);
+  }
+  success("Done!");
+}
+module.exports.moduleClean = moduleClean;
