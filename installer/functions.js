@@ -41,7 +41,7 @@ async function installLinuxDeps () {
         utils.success("All Dependencies needed are installed !");
         resolve();
       }
-      let modulesToInstall = result.toString().replace(",", " ");
+      let modulesToInstall = result.join(" ");
       utils.empty();
       utils.info("Installing missing package...");
       utils.install(modulesToInstall, (err) => {
