@@ -22,7 +22,7 @@
   "scripts": {
     "clean": "rm -rf node_modules package-lock.json",
     "deps": "node installer/deps",
-    "dev": "cd installer && node dev.js",
+    "dev": "node installer/dev",
     "dev:src": "cd installer && node src.js",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",

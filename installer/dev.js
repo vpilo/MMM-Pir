@@ -11,6 +11,8 @@ const utils = require("./utils");
 const isWin = utils.isWin();
 const project = utils.moduleName();
 
+const moduleRoot = path.resolve(__dirname, "../");
+
 var files = [];
 
 /**
@@ -20,7 +22,7 @@ async function searchFiles () {
   const components = await new fdir()
     .withBasePath()
     .filter((path) => path.endsWith(".js"))
-    .crawl("../src")
+    .crawl(`${moduleRoot}/src`)
     .withPromise();
 
   files = files.concat(components);
@@ -44,21 +46,19 @@ async function installFiles () {
  * @param {string} file to install
  * @returns {boolean} resolved with true
  */
-function install (file) {
-  var FileName, MyFileName;
+function install (FileIn) {
+  var FileOut, MyFileName;
   if (isWin) {
-    FileName = file.replace("..\\src\\", "..\\");
-    MyFileName = `${project}\\${FileName.replace("..\\", "")}`;
+    FileOut = FileIn.replace(`${moduleRoot}\\src\\`, `${moduleRoot}\\`);
   } else {
-    FileName = file.replace("../src/", "../");
-    MyFileName = `${project}/${FileName.replace("../", "")}`;
+    FileOut = FileIn.replace(`${moduleRoot}/src/`, `${moduleRoot}/`);
   }
-  let pathInResolve = path.resolve(__dirname, file);
-  let pathOutResolve = path.resolve(__dirname, FileName);
+  MyFileName = FileOut.replace(moduleRoot, project);
+
   utils.out(`Process File: \x1B[3m${MyFileName}`);
   return new Promise((resolve, reject) => {
     try {
-      copyFileSync(pathInResolve, pathOutResolve);
+      copyFileSync(FileIn, FileOut);
       resolve(true);
     } catch {
       reject();
