@@ -16,6 +16,8 @@ async function checkOS () {
   switch (sysinfo.type) {
     case "Linux":
       utils.success(`OS Detected: Linux (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
+      utils.empty();
+      await utils.checkRoot();
       await functions.updatePackageInfoLinux();
       await functions.installLinuxDeps();
       await functions.installNPMDeps();

@@ -82,5 +82,5 @@
 	  "windowsNPMRemove": ["@electron/rebuild", "node-libgpiod"],
 	  "windowsRebuild": false
   },
-  "rev": "250117"
+  "rev": "250119"
 }

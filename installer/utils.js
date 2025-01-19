@@ -6,6 +6,8 @@ const events = require("events");
 const path = require("node:path");
 const packageJSON = require("../package.json");
 
+const moduleRoot = path.resolve(__dirname, "../");
+
 // color codes
 const reset = "\x1B[0m";
 const red = "\x1B[91m";
@@ -362,7 +364,6 @@ function execCMD (command, callback = () => {}) {
 
 async function moduleReset () {
   info("➤ Cleaning js files and reset branch...");
-  let moduleRoot = path.resolve(__dirname, "../");
   if (isWin()) {
     await execCMD(`del ${moduleRoot}\\*.js`);
     await execCMD(`rmdir ${moduleRoot}\\components`);
@@ -376,7 +377,6 @@ module.exports.moduleReset = moduleReset;
 
 async function moduleClean () {
   info("➤ Cleaning js node_modules...");
-  let moduleRoot = path.resolve(__dirname, "../");
   if (isWin()) {
     await execCMD(`rmdir ${moduleRoot}\\node_modules`);
   } else {
@@ -468,3 +468,25 @@ async function moduleRebuild (callback = () => {}) {
   });
 }
 module.exports.moduleRebuild = moduleRebuild;
+
+async function checkUserGroup (folder, name) {
+  info(`➤ Check ${name} user/group...`);
+  let CHKUSER = await execOSCmd(`stat -c '%U' ${folder}`);
+  let CHKGROUP = await execOSCmd(`stat -c '%G' ${folder}`);
+  if (CHKUSER === "root" || CHKGROUP === "root") {
+    error("No root neeed!");
+    error(`Found: ${CHKUSER}/${CHKGROUP}`);
+    empty();
+    process.exit(1);
+    return;
+  }
+  success(`Found: ${CHKUSER}/${CHKGROUP}`);
+}
+
+async function checkRoot () {
+  let MagicMirrorRoot = path.resolve(moduleRoot, "../../");
+  await checkUserGroup(moduleRoot, moduleName());
+  empty();
+  await checkUserGroup(MagicMirrorRoot, "MagicMirror");
+}
+module.exports.checkRoot = checkRoot;
