@@ -349,13 +349,13 @@ function isWin () {
 }
 module.exports.isWin = isWin;
 
-function execCMD (command, callback = () => {}) {
+function execCMD (command, callback = () => {}, bypass) {
   return new Promise((resolve) => {
     exec(`${command}`, function (err) {
       if (err) {
         error(`Error on ${command}:`);
         error(err);
-        process.exit(1);
+        if (!bypass) process.exit(1);
       }
       resolve(callback());
     });
@@ -378,9 +378,9 @@ module.exports.moduleReset = moduleReset;
 async function moduleClean () {
   info("➤ Cleaning js node_modules...");
   if (isWin()) {
-    await execCMD(`rmdir ${moduleRoot}\\node_modules /Q /S`);
+    await execCMD(`rmdir ${moduleRoot}\\node_modules /Q /S`, () => {}, true)
   } else {
-    await execCMD(`rm -rf ${moduleRoot}/node_modules`);
+    await execCMD(`rm -rf ${moduleRoot}/node_modules`, () => {}, true);
   }
 }
 module.exports.moduleClean = moduleClean;
