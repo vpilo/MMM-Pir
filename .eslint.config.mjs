@@ -83,7 +83,7 @@ const config = [
     }
   },
   {
-    "files": ["eslint.config.mjs"],
+    "files": [".eslint.config.mjs"],
     "languageOptions": {
       "ecmaVersion": "latest",
       "globals": {
