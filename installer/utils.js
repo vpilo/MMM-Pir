@@ -99,7 +99,7 @@ module.exports.moduleVersion = moduleVersion;
 
 // Display module rev date
 function moduleRev () {
-  return packageJSON.Rev || "------";
+  return packageJSON.rev || "------";
 }
 module.exports.moduleRev = moduleRev;
 
