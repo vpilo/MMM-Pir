@@ -23,7 +23,7 @@
     "clean": "rm -rf node_modules package-lock.json",
     "deps": "node installer/deps",
     "dev": "node installer/dev",
-    "dev:src": "cd installer && node src.js",
+    "dev:src": "node installer/src",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "installer": "node installer/setup",
@@ -38,7 +38,7 @@
     "test": "npm run lint",
     "test:css": "stylelint *.css",
     "test:markdown": "markdownlint-cli2 *.md",
-    "test:minify": "cd installer && node minify.js",
+    "test:minify": "node installer/minify",
     "update": "installer/update.sh",
     "update:windows": "call installer/update.cmd"
   },

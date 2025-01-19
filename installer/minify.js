@@ -13,6 +13,8 @@ const project = utils.moduleName();
 const revision = utils.moduleRev();
 const version = utils.moduleVersion();
 
+const moduleRoot = path.resolve(__dirname, "../");
+
 const commentIn = "/**";
 const commentOut = "**/";
 
@@ -25,7 +27,7 @@ async function searchFiles () {
   const components = await new fdir()
     .withBasePath()
     .filter((path) => path.endsWith(".js"))
-    .crawl("../src")
+    .crawl(`${moduleRoot}/src`)
     .withPromise();
 
   files = files.concat(components);
@@ -46,25 +48,23 @@ async function minifyFiles () {
  * @param {string} file to minify
  * @returns {boolean} resolved with true
  */
-function minify (file) {
-  var FileName, MyFileName;
+function minify (FileIn) {
+  var FileOut, MyFileName;
   if (isWin) {
-    FileName = file.replace("..\\src\\", "..\\");
-    MyFileName = `${project}\\${FileName.replace("..\\", "")}`;
+    FileOut = FileIn.replace(`${moduleRoot}\\src\\`, `${moduleRoot}\\`);
   } else {
-    FileName = file.replace("../src/", "../");
-    MyFileName = `${project}/${FileName.replace("../", "")}`;
+    FileOut = FileIn.replace(`${moduleRoot}/src/`, `${moduleRoot}/`);
   }
-  let pathInResolve = path.resolve(__dirname, file);
-  let pathOutResolve = path.resolve(__dirname, FileName);
+  MyFileName = FileOut.replace(moduleRoot, project);
+
   utils.out(`Process File: \x1B[3m${MyFileName}`);
   return new Promise((resolve, reject) => {
     try {
       esbuild.buildSync({
-        entryPoints: [pathInResolve],
+        entryPoints: [FileIn],
         allowOverwrite: true,
         minify: true,
-        outfile: pathOutResolve,
+        outfile: FileOut,
         banner: {
           js: `${commentIn} ${project}\n  * File: ${MyFileName}\n  * Version: ${version}\n  * Revision: ${revision}\n  * ⚠ This file must not be modified ⚠\n${commentOut}`
         },
