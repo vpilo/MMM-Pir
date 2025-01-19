@@ -6,7 +6,6 @@ async function main () {
   utils.info(`Reset ${utils.moduleName()} v${utils.moduleVersion()}`);
   utils.empty();
   await utils.moduleReset();
-  utils.empty();
   utils.success("Done!");
 }
 

@@ -6,7 +6,6 @@ async function main () {
   utils.info(`Clean ${utils.moduleName()} v${utils.moduleVersion()}`);
   utils.empty();
   await utils.moduleClean();
-  utils.empty();
   utils.success("Done!");
 }
 
