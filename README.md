@@ -435,8 +435,6 @@ cd ~/MagicMirror/modules/MMM-Pir
 npm run update
 ```
 
-For windows user: You have to use `npm run update:windows` command instead of `npm run update`
-
 ### Automatic Update from [updatenotification](https://develop.docs.magicmirror.builders/modules/updatenotification.html) default module
 
 Since MagicMirror² v2.27.x, we are able to Update automaticaly any modules from `updatenotification`.
