@@ -37,8 +37,7 @@
     "test:css": "stylelint *.css",
     "test:markdown": "markdownlint-cli2 *.md",
     "test:minify": "node installer/minify",
-    "update": "installer/update.sh",
-    "update:windows": "call installer/update.cmd"
+    "update": "node installer/update"
   },
   "dependencies": {
     "@electron/rebuild": "^3.7.1",

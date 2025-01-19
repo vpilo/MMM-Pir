@@ -382,3 +382,42 @@ async function moduleClean () {
   }
 }
 module.exports.moduleClean = moduleClean;
+
+function moduleSetup (callback = () => {}) {
+  var emitter = new events.EventEmitter();
+  var child = exec("npm run setup", function (err) {
+    if (err) {
+      return callback(err);
+    }
+    return callback();
+  });
+
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
+
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
+
+  return emitter;
+}
+
+async function moduleUpdate (callback = () => {}) {
+  await execCMD("npm run reset");
+  await execCMD("git pull");
+  moduleSetup((err) => {
+    if (err) {
+      error("Error Detected!");
+      process.exit(1);
+    }
+    callback();
+  })
+    .on("stdout", function (data) {
+      out(data.trim());
+    })
+    .on("stderr", function (data) {
+      error(data.trim());
+    });
+}
+module.exports.moduleUpdate = moduleUpdate;
