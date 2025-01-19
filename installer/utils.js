@@ -378,7 +378,7 @@ module.exports.moduleReset = moduleReset;
 async function moduleClean () {
   info("➤ Cleaning js node_modules...");
   if (isWin()) {
-    await execCMD(`rmdir ${moduleRoot}\\node_modules /Q /S`, () => {}, true)
+    await execCMD(`rmdir ${moduleRoot}\\node_modules /Q /S`, () => {}, true);
   } else {
     await execCMD(`rm -rf ${moduleRoot}/node_modules`, () => {}, true);
   }
