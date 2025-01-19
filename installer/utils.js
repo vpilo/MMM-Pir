@@ -404,8 +404,11 @@ function moduleSetup (callback = () => {}) {
 }
 
 async function moduleUpdate (callback = () => {}) {
+  info("➤ Cleaning...");
   await execCMD("npm run reset");
+  info("➤ Updating Branch...");
   await execCMD("git pull");
+  info("➤ Setup...");
   moduleSetup((err) => {
     if (err) {
       error("Error Detected!");
