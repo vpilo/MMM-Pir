@@ -203,6 +203,7 @@ function update (callback = () => {}) {
  */
 function install (names, callback = () => {}) {
   var emitter = new events.EventEmitter();
+  console.log("Debug names:", names);
   var child = exec(`sudo apt-get install -y ${names}`, function (err) {
     if (err) {
       return callback(err);
