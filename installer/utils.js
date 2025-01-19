@@ -366,7 +366,7 @@ async function moduleReset () {
   info("➤ Cleaning js files and reset branch...");
   if (isWin()) {
     await execCMD(`del ${moduleRoot}\\*.js`);
-    await execCMD(`rmdir ${moduleRoot}\\components`);
+    await execCMD(`rmdir ${moduleRoot}\\components /Q /S`);
   } else {
     await execCMD(`rm -f ${moduleRoot}/*.js`);
     await execCMD(`rm -rf ${moduleRoot}/components`);
@@ -378,7 +378,7 @@ module.exports.moduleReset = moduleReset;
 async function moduleClean () {
   info("➤ Cleaning js node_modules...");
   if (isWin()) {
-    await execCMD(`rmdir ${moduleRoot}\\node_modules`);
+    await execCMD(`rmdir ${moduleRoot}\\node_modules /Q /S`);
   } else {
     await execCMD(`rm -rf ${moduleRoot}/node_modules`);
   }
