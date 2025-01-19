@@ -21,7 +21,7 @@
   "main": "MMM-Pir.js",
   "scripts": {
     "clean": "rm -rf node_modules package-lock.json",
-    "deps": "installer/dependencies.sh -d 'unclutter ddcutil cec-utils python3 python-is-python3 python3-gpiozero gpiod libgpiod2 libgpiod-dev'",
+    "deps": "node installer/deps",
     "dev": "cd installer && node dev.js",
     "dev:src": "cd installer && node src.js",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
