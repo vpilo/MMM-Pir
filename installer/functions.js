@@ -11,7 +11,7 @@ async function updatePackageInfoLinux () {
     utils.update((err) => {
       if (err) {
         utils.error("Error Detected!");
-        process.exit();
+        process.exit(1);
       }
       resolve();
     })
@@ -47,7 +47,7 @@ async function installLinuxDeps () {
       utils.install(modulesToInstall, (err) => {
         if (err) {
           utils.error("Error Detected!");
-          process.exit();
+          process.exit(1);
         }
         resolve();
       })
@@ -71,7 +71,7 @@ async function installNPMDeps () {
     utils.prune((err) => {
       if (err) {
         utils.error("Error Detected!");
-        process.exit();
+        process.exit(1);
       }
       resolve();
     })
@@ -99,7 +99,7 @@ async function minify () {
     utils.minify((err) => {
       if (err) {
         utils.error("Error Detected!");
-        process.exit();
+        process.exit(1);
       }
       resolve();
     })
@@ -118,7 +118,7 @@ async function develop () {
     utils.develop((err) => {
       if (err) {
         utils.error("Error Detected!");
-        process.exit();
+        process.exit(1);
       }
       resolve();
     })
@@ -144,7 +144,7 @@ async function electronRebuild () {
     utils.electronRebuild((err) => {
       if (err) {
         utils.error("Error Detected!");
-        process.exit();
+        process.exit(1);
       }
       resolve();
     })
@@ -181,7 +181,7 @@ async function removeWindowsDeps () {
     utils.npmRemove(modulesToRemove, (err) => {
       if (err) {
         utils.error("Error Detected!");
-        process.exit();
+        process.exit(1);
       }
       resolve();
     })
