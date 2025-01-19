@@ -7,6 +7,7 @@ async function main () {
   utils.empty();
   await utils.moduleReset();
   utils.empty();
+  utils.success("Done!");
 }
 
 main();

@@ -370,7 +370,6 @@ async function moduleReset () {
     await execCMD(`rm -rf ${moduleRoot}/components`);
   }
   await execCMD("git reset --hard");
-  success("Done!");
 }
 module.exports.moduleReset = moduleReset;
 
@@ -381,6 +380,5 @@ async function moduleClean () {
   } else {
     await execCMD(`rm -rf ${moduleRoot}/node_modules`);
   }
-  success("Done!");
 }
 module.exports.moduleClean = moduleClean;
