@@ -44,7 +44,7 @@
     "cron-parser": "^4.9.0",
     "dayjs": "^1.11.13",
     "esbuild": "^0.24.2",
-    "fdir": "^6.4.2",
+    "fdir": "^6.4.3",
     "long-press-event": "^2.5.0",
     "nan": "^2.22.0",
     "node-cron": "^3.0.3",
