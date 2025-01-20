@@ -54,7 +54,7 @@ function minify (FileIn) {
   }
   MyFileName = FileOut.replace(moduleRoot, project);
 
-  utils.out(`Process File: \x1B[3m${MyFileName}`);
+  utils.out(`Process File: \x1B[3m${MyFileName}\x1B[0m`);
   return new Promise((resolve, reject) => {
     try {
       esbuild.buildSync({
