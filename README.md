@@ -390,8 +390,6 @@ If you want a maximum of CPU power, `performance` is the best choice !
 
 If you want an economy mode of CPU power, `powersave` is the best choice !
 
-⚠ Governor is not available under windows environement
-
 ------
 
 #### Sounds Configuration
