@@ -36,7 +36,7 @@ module.exports.configMerge = configMerge;
 
 // Display an empty line
 function empty () {
-  console.log(" ");
+  console.log("‎ ");
 }
 module.exports.empty = empty;
 
