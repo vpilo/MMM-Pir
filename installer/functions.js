@@ -175,7 +175,7 @@ async function removeWindowsDeps () {
     utils.out("No dependecies needed!");
     return;
   }
-  let modulesToRemove = npm.toString().replace(",", " ");
+  let modulesToRemove = npm.join(" ");
   utils.info(`[Windows] removing: ${modulesToRemove}`);
   return new Promise((resolve) => {
     utils.npmRemove(modulesToRemove, (err) => {
