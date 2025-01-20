@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@electron/rebuild": "^3.7.1",
+    "ansis": "^3.9.0",
     "cron-parser": "^4.9.0",
     "dayjs": "^1.11.13",
     "esbuild": "^0.24.2",
@@ -79,8 +80,11 @@
       "libgpiod2",
       "libgpiod-dev"
     ],
-	  "windowsNPMRemove": ["@electron/rebuild", "node-libgpiod"],
-	  "windowsRebuild": false
+    "windowsNPMRemove": [
+      "@electron/rebuild",
+      "node-libgpiod"
+    ],
+    "windowsRebuild": false
   },
   "rev": "250119"
 }

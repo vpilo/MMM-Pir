@@ -4,18 +4,10 @@ const Exec = util.promisify(require("node:child_process").exec);
 const exec = require("child_process").exec;
 const events = require("events");
 const path = require("node:path");
+const colors = require("ansis");
 const packageJSON = require("../package.json");
 
 const moduleRoot = path.resolve(__dirname, "../");
-
-// color codes
-const reset = "\x1B[0m";
-const red = "\x1B[91m";
-const orange = "\x1B[93m";
-const green = "\x1B[92m";
-const gray = "\x1B[2m";
-const blue = "\x1B[94m";
-const cyan = "\x1B[96m";
 
 // deep merge
 function configMerge (result) {
@@ -42,49 +34,39 @@ function configMerge (result) {
 }
 module.exports.configMerge = configMerge;
 
-function message (text, color) {
-  console.log(`${color}${text}${reset}`);
-}
-
 // Display an empty line
 function empty () {
-  message("", reset);
+  console.log("");
 }
 module.exports.empty = empty;
 
-// Display question in cyan
-function question (text) {
-  message(text, cyan);
-}
-module.exports.question = question;
-
 // Display a error in red
 function error (text) {
-  message(text, red);
+  console.log(colors.red(text));
 }
 module.exports.error = error;
 
 // Display a warning in yellow
 function warning (text) {
-  message(text, orange);
+  console.log(colors.yellow(text));
 }
 module.exports.warning = warning;
 
 // Display a success in green
 function success (text) {
-  message(text, green);
+  console.log(colors.green(text));
 }
 module.exports.success = success;
 
 // Display out std message in gray
 function out (text) {
-  message(text, gray);
+  console.log(colors.hex("#C0C0C0")(text));
 }
 module.exports.out = out;
 
 // Display an information in blue
 function info (text) {
-  message(text, blue);
+  console.log(colors.blue(text));
 }
 module.exports.info = info;
 
