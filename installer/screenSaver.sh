@@ -1,61 +1,30 @@
 #!/bin/bash
-# +-----------------+
-# | npm postinstall |
-# +-----------------+
 
-rebuild=0
-minify=0
+# color codes
+_reset="\033[0m"
+_red="\033[91m"
+_orange="\033[93m"
+_green="\033[92m"
+_blue="\033[94m"
 
-while getopts ":rm" option; do
-  case $option in
-    r) # -r option for magicmirror rebuild
-       rebuild=1;;
-    m) # -m option for minify all sources
-       minify=1;;
-  esac
-done
-
-# get the installer directory
-Installer_get_current_dir () {
-  SOURCE="${BASH_SOURCE[0]}"
-  while [ -h "$SOURCE" ]; do
-    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-    SOURCE="$(readlink "$SOURCE")"
-    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-  done
-  echo "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+# Display a message in color
+# $1 - message to display
+# $2 - color to use
+Installer_message() {
+  echo -e "$2$1$_reset"
 }
 
-Installer_dir="$(Installer_get_current_dir)"
+# Displays a error in red
+Installer_error() { Installer_message "$1" "$_red" 1>&2 ;}
 
-# move to installler directory
-cd "$Installer_dir"
-source utils.sh
-echo
+# Displays a warning in yellow
+Installer_warning() { Installer_message "$1" "$_orange" ;}
 
-Installer_info "④ ➤ Postinstall"
-echo
+# Displays a success in green
+Installer_success() { Installer_message "$1" "$_green" ;}
 
-if [[ $minify == 1 ]]; then
-  Installer_info "Minify Main code..."
-  node minify.js || {
-    Installer_error "Minify Failed!"
-    exit 255
-  }
-  Installer_success "Done"
-  echo
-else
-  Installer_info "Install developer Main code..."
-  node dev.js || {
-    Installer_error "Install Failed!"
-    exit 255
-  }
-  Installer_success "Done"
-  echo
-fi
-
-# Go back to module root
-cd ..
+# Displays an information in blue
+Installer_info() { Installer_message "$1" "$_blue" ;}
 
 # Disable Screensaver
 ### Part of script of @sdetweil magicmirror_script ###
@@ -256,20 +225,3 @@ if [[ "$change" -gt 0 ]]; then
 fi
 Installer_success "Done"
 echo
-
-if [[ $rebuild == 1 ]]; then
-  Installer_info "Rebuild MagicMirror..."
-  electron-rebuild 1>/dev/null || {
-    Installer_error "Rebuild Failed"
-    exit 255
-  }
-  Installer_success "Done"
-  echo
-fi
-
-# module name
-Installer_module="$(grep -Eo '\"name\"[^,]*' ./package.json | grep -Eo '[^:]*$' | awk  -F'\"' '{print $2}')"
-
-echo
-
-Installer_success "$Installer_module is now installed !"
