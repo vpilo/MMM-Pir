@@ -15,7 +15,15 @@ async function checkOS () {
   const sysinfo = await utils.checkOS();
   switch (sysinfo.type) {
     case "Linux":
-      utils.success(`OS Detected: Linux (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
+      if (sysinfo.name === "raspbian" && sysinfo.version < "11") {
+        utils.error(`OS Detected: Linux (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
+        utils.empty();
+        utils.error("Unfortunately, this module is not compatible with your OS");
+        utils.error("Try to update your OS to the lasted version of raspbian");
+        process.exit(1);
+      } else {
+        utils.success(`OS Detected: Linux (${sysinfo.name} ${sysinfo.version} ${sysinfo.arch})`);
+      }
       utils.empty();
       await utils.checkRoot();
       await functions.updatePackageInfoLinux();
