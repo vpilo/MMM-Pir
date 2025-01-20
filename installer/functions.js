@@ -34,29 +34,29 @@ async function installLinuxDeps () {
     utils.out("No dependecies needed!");
     return;
   }
-
   return new Promise((resolve) => {
     utils.check(apt, (result) => {
       if (!result.length) {
         utils.success("All Dependencies needed are installed !");
         resolve();
-      }
-      let modulesToInstall = result.join(" ");
-      utils.empty();
-      utils.info("Installing missing package...");
-      utils.install(modulesToInstall, (err) => {
-        if (err) {
-          utils.error("Error Detected!");
-          process.exit(1);
-        }
-        resolve();
-      })
-        .on("stdout", function (data) {
-          utils.out(data.trim());
+      } else {
+        let modulesToInstall = result.join(" ");
+        utils.empty();
+        utils.info("Installing missing package...");
+        utils.install(modulesToInstall, (err) => {
+          if (err) {
+            utils.error("Error Detected!");
+            process.exit(1);
+          }
+          resolve();
         })
-        .on("stderr", function (data) {
-          utils.error(data.trim());
-        });
+          .on("stdout", function (data) {
+            utils.out(data.trim());
+          })
+          .on("stderr", function (data) {
+            utils.error(data.trim());
+          });
+      }
     });
   });
 }
