@@ -8,13 +8,13 @@
     "screen",
     "motion detection"
   ],
-  "homepage": "https://github.com/bugsounet/MMM-Pir",
+  "homepage": "https://github.com/vpilo/MMM-Pir",
   "bugs": {
     "url": "https://www.bugsounet.fr/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugsounet/MMM-Pir"
+    "url": "https://github.com/vpilo/MMM-Pir"
   },
   "license": "MIT",
   "author": "bugsounet",

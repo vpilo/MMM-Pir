@@ -6,13 +6,13 @@ It will wake up with a Pir sensor, Touch screen or crontab
 
 ## Screenshot
 
-![screenshot1](https://raw.githubusercontent.com/bugsounet/MMM-Pir/dev/screenshot/screenshot.png)
+![screenshot1](https://raw.githubusercontent.com/vpilo/MMM-Pir/dev/screenshot/screenshot.png)
 
-![screenshot2](https://raw.githubusercontent.com/bugsounet/MMM-Pir/dev/screenshot/screenshot2.png)
+![screenshot2](https://raw.githubusercontent.com/vpilo/MMM-Pir/dev/screenshot/screenshot2.png)
 
-![screenshot3](https://raw.githubusercontent.com/bugsounet/MMM-Pir/dev/screenshot/screenshot3.png)
+![screenshot3](https://raw.githubusercontent.com/vpilo/MMM-Pir/dev/screenshot/screenshot3.png)
 
-![screenshot4](https://raw.githubusercontent.com/bugsounet/MMM-Pir/dev/screenshot/screenshot4.png)
+![screenshot4](https://raw.githubusercontent.com/vpilo/MMM-Pir/dev/screenshot/screenshot4.png)
 
 ## Installation
 
@@ -23,7 +23,7 @@ Clone the module into your MagicMirror module folder and execute `npm run setup`
 
 ```sh
 cd ~/MagicMirror/modules
-git clone https://github.com/bugsounet/MMM-Pir
+git clone https://github.com/vpilo/MMM-Pir
 cd MMM-Pir
 npm run setup
 ```
